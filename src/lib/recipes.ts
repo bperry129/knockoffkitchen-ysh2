@@ -32,7 +32,7 @@ export interface Recipe {
 }
 
 // Default placeholder image URL
-export const DEFAULT_RECIPE_IMAGE = '/images/default-recipe.png';
+export const DEFAULT_RECIPE_IMAGE = '/images/knockoff.png';
 
 // Synchronous functions for server components
 export function getRecipes(): Recipe[] {

@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: 'article',
       images: [
         {
-          url: recipe.imageUrl || '/images/default-recipe.png',
+          url: recipe.imageUrl || '/images/knockoff.png',
           width: 1200,
           height: 630,
           alt: recipe.title,
@@ -78,19 +78,13 @@ export default async function RecipePage({ params }: Props) {
             <div className="md:flex">
               <div className="md:w-1/2">
                 <div className="relative h-64 md:h-full bg-gray-200">
-                  {recipe.imageUrl ? (
-                    <Image
-                      src={recipe.imageUrl}
-                      alt={recipe.title}
-                      fill
-                      className="object-cover"
-                      unoptimized={true} // Skip optimization for external URLs
-                    />
-                  ) : (
-                    <div className="absolute inset-0 flex items-center justify-center text-gray-500">
-                      {recipe.title} Image
-                    </div>
-                  )}
+                  <Image
+                    src={recipe.imageUrl || '/images/knockoff.png'}
+                    alt={recipe.title}
+                    fill
+                    className="object-cover"
+                    unoptimized={recipe.imageUrl ? true : false} // Skip optimization for external URLs
+                  />
                 </div>
               </div>
               

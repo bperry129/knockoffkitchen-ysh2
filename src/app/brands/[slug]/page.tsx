@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: `Discover delicious copycat recipes from ${brand.name}. ${brand.count} recipes available.`,
       images: [
         {
-          url: '/images/default-recipe.png',
+          url: '/images/knockoff.png',
           width: 1200,
           height: 630,
           alt: brand.name,

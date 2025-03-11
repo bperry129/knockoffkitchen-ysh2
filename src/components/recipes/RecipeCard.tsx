@@ -32,31 +32,26 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
   const imageSrc = imageUrl || image || DEFAULT_RECIPE_IMAGE;
   
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+    <Link 
+      href={`/recipes/${slug}`} 
+      className="block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+    >
       <div className="relative h-48 bg-gray-200">
         {/* If we have an image, display it, otherwise show a placeholder */}
-        {imageSrc ? (
-          <Image
-            src={imageSrc}
-            alt={title}
-            fill
-            className="object-cover"
-            unoptimized={imageUrl ? true : false} // Skip optimization for external URLs
-          />
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center text-gray-500">
-            {title} Image
-          </div>
-        )}
+        <Image
+          src={imageSrc}
+          alt={title}
+          fill
+          className="object-cover"
+          unoptimized={imageUrl ? true : false} // Skip optimization for external URLs
+        />
       </div>
       <div className="p-4">
         <span className="text-xs font-semibold text-primary-600 uppercase tracking-wider">
           {category}
         </span>
-        <h3 className="text-lg font-semibold mt-1 mb-2">
-          <Link href={`/recipes/${slug}`} className="hover:text-primary-600">
-            {title}
-          </Link>
+        <h3 className="text-lg font-semibold mt-1 mb-2 hover:text-primary-600">
+          {title}
         </h3>
         <div className="flex items-center text-sm text-gray-500 mt-2">
           <span className="mr-3">Prep: {prepTime}</span>
@@ -64,6 +59,6 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
           <span>{difficulty}</span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };

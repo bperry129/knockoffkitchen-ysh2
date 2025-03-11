@@ -35,3 +35,97 @@
 2025-03-11 13:10:06,706 - INFO - Saved recipe to recipes_output\Secret_Recipe_Authentic_Heinz_Blue_Cheese_Salad_Dressing_Made_At_Home_1441505e.json
 2025-03-11 13:10:08,720 - INFO - Processing batch 2/41
 2025-03-11 13:10:30,369 - ERROR - Could not find JSON content in response for Heinz Horseradish Sauce, Casepack
+2025-03-11 13:34:03,716 - INFO - Loaded CSV with 804 products
+2025-03-11 13:34:03,719 - INFO - Loaded checkpoint with 0 processed products
+2025-03-11 13:34:03,724 - INFO - Split into 81 batches of size 10
+2025-03-11 13:34:03,732 - INFO - Processing batch 1/81
+2025-03-11 13:35:13,219 - INFO - Saved recipe to recipes_output\Homemade_Heinz_Aioli_A_Healthier,_Customizable_Delight_6a15cc98.json
+2025-03-11 13:35:13,222 - INFO - Saved recipe to recipes_output\Homemade_Heinz_57_Sauce_Better_Than_Store-Bought!_f5d56f24.json
+2025-03-11 13:35:13,225 - INFO - Saved recipe to recipes_output\Authentic_Heinz_Texas_Style_Bold_&_Spicy_BBQ_Baked_Beans_Made_at_Home_A_Better_Recipe_b3cd3ba3.json
+2025-03-11 13:35:13,228 - INFO - Saved recipe to recipes_output\Secret_Recipe_Authentic_Heinz_Tomato_Ketchup_Made_At_Home_02a347ec.json
+2025-03-11 13:35:13,231 - INFO - Saved recipe to recipes_output\Secret_Recipe_Authentic_Heinz_Home-style_Brown_Gravy_with_Onions,_Jar_Made_At_Home_1608ee9c.json
+2025-03-11 13:35:26,125 - INFO - Saved recipe to recipes_output\Secret_Recipe_Authentic_Heinz_Vegetarian_Beans_-_Premium_In_Tomato_Sauce_Made_At_Home_92b9b0af.json
+2025-03-11 13:35:26,130 - INFO - Saved recipe to recipes_output\Perfectly_Crafted_DIY_Heinz_57_Sauce_with_Honey,_Bottle_That_Will_Amaze_Your_Friends_ce5bfcc0.json
+2025-03-11 13:35:26,131 - INFO - Saved recipe to recipes_output\Ultimate_Homemade_Heinz_Piccalilli_Pickle_Better_Than_Store-Bought_911a987c.json
+2025-03-11 13:35:26,133 - INFO - Saved recipe to recipes_output\Perfectly_Crafted_DIY_Heinz_Hamburger_Dill_Chips,_16_fl_oz_Jar_That_Will_Amaze_Your_Friends_7d5b6376.json
+2025-03-11 13:36:02,865 - INFO - Saved recipe to recipes_output\Better_Than_Store-Bought_Homemade_Heinz_Hot_&_Spicy_Tomato_Ketchup_Recipe_abd62c3f.json
+2025-03-11 13:36:04,876 - INFO - Processing batch 2/81
+2025-03-11 13:36:12,193 - ERROR - Could not find JSON content in response for Heinz Beanz Salt Reduced
+2025-03-11 13:36:35,387 - INFO - Saved recipe to recipes_output\Homemade_Heinz_Country-Style_Sausage_Gravy_A_Tastier,_Healthier_Version_715b2c29.json
+2025-03-11 13:36:35,390 - INFO - Saved recipe to recipes_output\Homemade_Heinz_Simply_Heinz_Tomato_Ketchup_A_Healthier,_Cost-Effective_Alternative_540d9879.json
+2025-03-11 13:36:35,393 - INFO - Saved recipe to recipes_output\Authentic_Homemade_Heinz_Beanz_BBQ_Sauce_Recipe_57ca2cb4.json
+2025-03-11 13:37:29,029 - INFO - Saved recipe to recipes_output\Ultimate_Homemade_HEINZ_Tomato_Sauce,_._Pouch_Better_Than_The_Original_80b5f2ef.json
+2025-03-11 13:37:29,030 - INFO - Saved recipe to recipes_output\Secret_Recipe_Authentic_Heinz_Red_Kidney_Beans_Made_At_Home_cb575724.json
+2025-03-11 13:37:29,032 - INFO - Saved recipe to recipes_output\Homemade_HEINZ_Sauce_Tartare_Better_Than_Store-Bought!_9b76146c.json
+2025-03-11 13:37:29,034 - INFO - Saved recipe to recipes_output\Homemade_Heinz_Reduced_Sugar_Tomato_Ketchup_A_Healthier_Twist_f098ca42.json
+2025-03-11 13:37:38,537 - INFO - Saved recipe to recipes_output\Secret_Recipe_Authentic_Heinz_Baked_Beans_50%_Less_Sugar_Made_At_Home_8baa9aa2.json
+2025-03-11 13:37:38,539 - INFO - Saved recipe to recipes_output\Secret_Recipe_Authentic_Heinz_Blue_Cheese_Salad_Dressing_Made_At_Home_166070bb.json
+2025-03-11 13:37:40,540 - INFO - Processing batch 3/81
+2025-03-11 13:38:52,087 - INFO - Saved recipe to recipes_output\Perfectly_Crafted_DIY_Heinz_Tomato_Ketchup_Value_Size,_Bottle_That_Will_Amaze_Your_Friends_a5cd6d0d.json
+2025-03-11 13:38:52,089 - INFO - Saved recipe to recipes_output\Ultimate_Homemade_Heinz_Cream_of_Tomato_Soup_with_Spanish_Chorizo_Better_Than_The_Original_026516f7.json
+2025-03-11 13:38:59,654 - ERROR - Could not find JSON content in response for Heinz 57 Sauce -
+2025-03-11 13:38:59,655 - INFO - Saved recipe to recipes_output\Ultimate_Homemade_Heinz_HomeStyle_Roasted_Turkey_Gravy_Better_Than_Store-Bought_3b056b39.json
+2025-03-11 13:38:59,657 - INFO - Saved recipe to recipes_output\Homemade_Heinz_Classic_Cream_of_Mushroom_Soup_A_Healthier,_Budget-Friendly_Copycat_Recipe_faf591e9.json
+2025-03-11 13:38:59,659 - INFO - Saved recipe to recipes_output\Secret_Recipe_Authentic_Heinz_Seafood_Cocktail_Sauce_Made_At_Home_4d85a625.json
+2025-03-11 13:38:59,660 - INFO - Saved recipe to recipes_output\Secret_Recipe_Authentic_Heinz_Baked_Beans_in_a_Delicious_Rich_Tomato_Sauce_Made_At_Home_d3d25c6a.json
+2025-03-11 13:38:59,662 - INFO - Saved recipe to recipes_output\Ultimate_Homemade_Heinz_Tomato_Ketchup_Better_Than_Store-Bought_088d5bf0.json
+2025-03-11 13:38:59,664 - INFO - Saved recipe to recipes_output\Better_Than_Store-Bought_Homemade_Heinz_Lite_Mayonnaise_Recipe_a6161be6.json
+2025-03-11 13:38:59,666 - INFO - Saved recipe to recipes_output\Ultimate_Homemade_Heinz_Relish_-_Hot_Dog_Better_Than_The_Original_d9509a7a.json
+2025-03-11 13:39:01,675 - INFO - Processing batch 4/81
+2025-03-11 13:39:16,733 - ERROR - Could not find JSON content in response for Heinz Wine Vinegar,
+2025-03-11 13:39:25,381 - ERROR - Could not find JSON content in response for Heinz Georgia Style Sweet Honey BBQ Sauce, Bottle
+2025-03-11 13:39:38,106 - INFO - Saved recipe to recipes_output\Authentic_Heinz_57_Sauce,_Bottle_The_Ultimate_DIY_Recipe_9d95428b.json
+2025-03-11 13:41:00,621 - INFO - Saved recipe to recipes_output\Secret_Recipe_Authentic_Heinz_HomeStyle_Classic_Chicken_Gravy,_Jar_Made_At_Home_d3f9f015.json
+2025-03-11 13:41:00,633 - INFO - Saved recipe to recipes_output\Secret_Recipe_Authentic_Heinz_Tomato_Ketchup_&_100%_Natural_Yellow_Mustard_Value_Pack,_Pack,_Bottles_Made_At_Home_abd587b4.json
+2025-03-11 13:41:00,642 - INFO - Saved recipe to recipes_output\Perfectly_Crafted_DIY_Heinz_Chicken_Broth_That_Will_Amaze_Your_Friends_d95fd06d.json
+2025-03-11 13:41:00,652 - INFO - Saved recipe to recipes_output\Homemade_Heinz_Horseradish_Sauce_A_Creamy,_Tangy_Copycat_Recipe_c884936d.json
+2025-03-11 13:41:00,676 - INFO - Saved recipe to recipes_output\Ultimate_Homemade_Heinz_Tomato_Ketchup_No_Added_Sugar_&_Salt_Better_Than_Store-Bought_7ed10310.json
+2025-03-11 13:41:00,685 - INFO - Saved recipe to recipes_output\Creamy_Homemade_Heinz_Salad_Cream_30%_Less_Fat_-_Better_Than_Store-Bought!_5b48464a.json
+2025-03-11 13:41:00,691 - INFO - Saved recipe to recipes_output\Homemade_Heinz_Tomato_Ketchup_No_Sugar_Added_A_Healthier,_Tastier_Alternative_3a785a43.json
+2025-03-11 13:41:02,708 - INFO - Processing batch 5/81
+2025-03-11 13:41:28,879 - INFO - Saved recipe to recipes_output\Ultimate_Homemade_Heinz_Seriously_Good_Light_Squeezy_Mayonnaise_Better_Than_The_Original!_3013e76b.json
+2025-03-11 13:42:09,646 - ERROR - Could not find JSON content in response for Heinz Pickles - Premium Dill
+2025-03-11 13:43:15,236 - INFO - Saved recipe to recipes_output\Ultimate_Homemade_Heinz_Jalapeno_Chilli_Ketchup_Better_Than_Store-Bought_2568e67d.json
+2025-03-11 13:43:15,242 - INFO - Saved recipe to recipes_output\Ultimate_Homemade_Heinz_Caramelised_Onion_Mayonnaise_Better_Than_Store-Bought!_ec40f95a.json
+2025-03-11 13:43:15,247 - INFO - Saved recipe to recipes_output\DIY_Heinz_Tomato_Ketchup_A_Healthier,_Homemade_Twist_7c2a9949.json
+2025-03-11 13:43:15,250 - INFO - Saved recipe to recipes_output\Authentic_Homemade_Heinz_Yellow_Mustard_A_Tangy_DIY_Delight_00f94d69.json
+2025-03-11 13:43:15,254 - INFO - Saved recipe to recipes_output\Homemade_Heinz_Tomato_Ketchup_Simply_A_Healthier,_Tastier_Alternative_5cfda4ab.json
+2025-03-11 13:43:15,256 - INFO - Saved recipe to recipes_output\Authentic_Homemade_La_Pulpe_de_Tomates_Concassées_-_Heinz_Recipe_9c7eeef5.json
+2025-03-11 13:43:15,262 - INFO - Saved recipe to recipes_output\Authentic_Heinz_Tomato_Ketchup_Sweetened_Only_with_Honey,_Bottle_A_Healthier_Homemade_Copycat_Recipe_d1ab8b96.json
+2025-03-11 13:43:15,267 - INFO - Saved recipe to recipes_output\Secret_Recipe_Authentic_Branded_Heinz_Organic_Tomato_Ketchup_Made_at_Home_-_Better_Than_Store-Bought!_2caee6b3.json
+2025-03-11 13:43:17,269 - INFO - Processing batch 6/81
+2025-03-11 13:43:48,987 - INFO - Saved recipe to recipes_output\Better_Than_Store-Bought_Homemade_Heinz_Tomato_Ketchup_Recipe_89c801e0.json
+2025-03-11 13:44:11,540 - INFO - Saved recipe to recipes_output\Secret_Recipe_Authentic_Heinz_Gourmet_Malt_Vinegar_-_Made_At_Home_b9285431.json
+2025-03-11 13:44:16,234 - ERROR - Could not find JSON content in response for Heinz LR/D WYLERS BEEF BOUILLON CUBES , 8-count
+2025-03-11 13:44:16,238 - INFO - Saved recipe to recipes_output\Secret_Recipe_Authentic_Heinz_Minestrone_Soup_Made_At_Home_f5c72962.json
+2025-03-11 13:45:23,193 - INFO - Saved recipe to recipes_output\Perfectly_Crafted_DIY_Heinz_North_America_Heinz_Soup,_That_Will_Amaze_Your_Friends_59efa5a6.json
+2025-03-11 13:45:23,196 - INFO - Saved recipe to recipes_output\Secret_Recipe_Authentic_Heinz_Whole_Egg_Mayonnaise_Made_At_Home_f029b4f7.json
+2025-03-11 13:45:23,198 - INFO - Saved recipe to recipes_output\Authentic_Homemade_Simply_Heinz_Honey_Mustard_Recipe_-_Better_Than_Store-Bought!_c3ad47f7.json
+2025-03-11 13:45:23,199 - INFO - Saved recipe to recipes_output\Homemade_Heinz_Cream_of_Tomato_Soup_A_Healthier,_Cost-Effective_Delight_b1d6421a.json
+2025-03-11 13:45:23,201 - INFO - Saved recipe to recipes_output\Authentic_Homemade_Heinz_Beans_in_Tomato_Sauce_A_Healthier,_Cost-Effective_Copycat_Recipe_2a914a32.json
+2025-03-11 13:45:23,203 - INFO - Saved recipe to recipes_output\Ultimate_Homemade_Original_Heinz_Vegetable_Cup_Soup_Better_Than_Store-Bought!_9c509895.json
+2025-03-11 13:45:25,216 - INFO - Processing batch 7/81
+2025-03-11 13:45:53,681 - INFO - Saved recipe to recipes_output\Authentic_Homemade_Heinz_Tomato_Ketchup_Recipe_21c56d6c.json
+2025-03-11 13:46:26,731 - INFO - Saved recipe to recipes_output\Authentic_Homemade_Heinz_Peanut_Butter_A_Creamy_Delight_f3ce4d18.json
+2025-03-11 13:46:26,734 - INFO - Saved recipe to recipes_output\Authentic_Heinz_Tomato_Juice_Copycat_Recipe_Fresh_&_Homemade_476c945b.json
+2025-03-11 13:46:43,823 - ERROR - Could not find JSON content in response for Heinz Eifel Mosel Riesling Spatlese
+2025-03-11 13:46:45,478 - INFO - Saved recipe to recipes_output\Secret_Recipe_Authentic_Heinz_Organic_Tomato_Ketchup_Made_At_Home_9f9c29d5.json
+2025-03-11 13:46:52,468 - ERROR - Could not find JSON content in response for  Heinz Inverted Bottle Tomato Ketchup, Bottle
+2025-03-11 13:46:52,476 - INFO - Saved recipe to recipes_output\Authentic_Homemade_Heinz_Unfiltered_All_Natural_Apple_Cider_Vinegar,_32_fl_oz_DIY_Recipe_for_Better_Health_2502351a.json
+2025-03-11 13:46:52,485 - INFO - Saved recipe to recipes_output\Ultimate_Homemade_Heinz_Bell_Orto_Tomato_Sauce_Can_Better_Than_The_Original_d02f6e2c.json
+2025-03-11 13:46:52,488 - INFO - Saved recipe to recipes_output\Authentic_Homemade_SIMPLY_HEINZ_Ketchup,_Made_Better_at_Home_345add85.json
+2025-03-11 13:46:52,490 - INFO - Saved recipe to recipes_output\Authentic_Homemade_Heinz_Jalapeno_Tomato_Ketchup_Recipe_bf456668.json
+2025-03-11 13:46:54,496 - INFO - Processing batch 8/81
+2025-03-11 13:47:36,777 - INFO - Saved recipe to recipes_output\Ultimate_Homemade_Heinz_Big_Soup_Lamb_and_Vegetable_Better_Than_The_Original_9d6ae457.json
+2025-03-11 13:47:38,984 - ERROR - Could not find JSON content in response for  Heinz Mayochup Mayonnaise & Ketchup Sauce Mix, Bottle
+2025-03-11 13:47:38,986 - INFO - Saved recipe to recipes_output\Authentic_Homemade_Heinz_Potato_Leek_Soup_A_Creamy,_Comforting_Copycat_Recipe_5bf9c5b0.json
+2025-03-11 13:47:38,988 - INFO - Saved recipe to recipes_output\Homemade_Heinz_Tomato_Ketchup_A_Healthier,_Budget-Friendly_Copycat_Recipe_a818d468.json
+2025-03-11 13:47:38,991 - INFO - Saved recipe to recipes_output\Authentic_HEINZ_CHEF_FRANCISCO_White_Chicken_and_Bean_Chili_Soup,_Made_Fresh_at_Home_9864c6c6.json
+2025-03-11 13:47:38,993 - INFO - Saved recipe to recipes_output\Homemade_Heinz_Baked_Beans_A_Healthier,_Tastier_Copycat_Recipe_e2a2909a.json
+2025-03-11 13:47:38,995 - INFO - Saved recipe to recipes_output\Perfectly_Crafted_DIY_Heinz_Classic_Ketchup,_16_per_case._That_Will_Amaze_Your_Friends_dfc6a7c9.json
+2025-03-11 13:47:38,998 - INFO - Saved recipe to recipes_output\Ultimate_Homemade_Heinz_Tomato_Ketchup,_3_pk._._Better_Than_The_Original_4e1f801f.json
+2025-03-11 13:47:39,000 - INFO - Saved recipe to recipes_output\Homemade_Heinz_Apple_Cider_Vinegar_16_fl_oz_Bottles_A_Healthier,_Cost-Effective_Alternative_bed2952e.json
+2025-03-11 13:47:39,003 - INFO - Saved recipe to recipes_output\Homemade_Heinz_Signature_Rich_&_Savory_Gravy_with_Real_Roasted_Beef_A_Healthier,_Cost-Effective_Alternative_aed4214b.json
+2025-03-11 13:47:41,017 - INFO - Processing batch 9/81
+2025-03-11 13:47:49,962 - INFO - Saved recipe to recipes_output\Secret_Recipe_Authentic_HEINZ_Bulk_Light_Ranch_Dressing_Dispenser_Pack,_al._Pouches_Made_At_Home_79d26ace.json
+2025-03-11 13:47:53,126 - ERROR - Could not find JSON content in response for Heinz thai style coconut lime sauce
