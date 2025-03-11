@@ -2,65 +2,31 @@ import React from 'react';
 import Link from 'next/link';
 import { RecipeCard } from '@/components/recipes/RecipeCard';
 import { Metadata } from 'next';
-
-// This would typically come from a database or API
-const getBrandBySlug = (slug: string) => {
-  // Data from DeepSeek-generated recipes
-  const brands = {
-    "pringles": {
-      name: "Pringles",
-      description: "Popular potato chip brand known for their distinctive saddle-shaped chips and tube packaging.",
-      image: "/images/brands/pringles.jpg",
-      website: "https://www.pringles.com"
-    }
-  };
-  
-  return brands[slug as keyof typeof brands] || {
-    name: "Brand Not Found",
-    description: "This brand does not exist.",
-    image: "/images/brands/default.jpg",
-    website: "#"
-  };
-};
-
-// This would typically come from a database or API
-const getRecipesByBrand = (brand: string) => {
-  // Data from DeepSeek-generated recipes
-  const allRecipes = [
-    {
-      id: 1,
-      title: "Homemade Extra Hot Chili & Lime: A Copycat Recipe Better Than Store-Bought",
-      category: "Chips",
-      image: "/images/chips.jpg",
-      prepTime: "15 min",
-      cookTime: "30 min",
-      difficulty: "Medium",
-      slug: "pringles-extra-hot-chili-lime",
-      brand: "Pringles"
-    }
-  ];
-  
-  return allRecipes.filter(recipe => 
-    recipe.brand.toLowerCase() === brand.toLowerCase()
-  );
-};
+import { fetchBrandBySlug, fetchRecipesByBrand } from '@/lib/recipes';
 
 type Props = {
   params: { slug: string }
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const brand = getBrandBySlug(params.slug);
+  const brand = await fetchBrandBySlug(params.slug);
+  
+  if (!brand) {
+    return {
+      title: 'Brand Not Found - CopyCat Recipes',
+      description: 'The brand you are looking for could not be found.',
+    };
+  }
   
   return {
     title: `${brand.name} Copycat Recipes - CopyCat Recipes`,
-    description: `Discover delicious copycat recipes from ${brand.name}. ${brand.description}`,
+    description: `Discover delicious copycat recipes from ${brand.name}. ${brand.count} recipes available.`,
     openGraph: {
       title: `${brand.name} Copycat Recipes - CopyCat Recipes`,
-      description: `Discover delicious copycat recipes from ${brand.name}. ${brand.description}`,
+      description: `Discover delicious copycat recipes from ${brand.name}. ${brand.count} recipes available.`,
       images: [
         {
-          url: brand.image || '/images/brands/default.jpg',
+          url: '/images/default-recipe.png',
           width: 1200,
           height: 630,
           alt: brand.name,
@@ -70,14 +36,31 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function BrandPage({ params }: Props) {
-  const brand = getBrandBySlug(params.slug);
-  const recipes = getRecipesByBrand(brand.name);
+export default async function BrandPage({ params }: Props) {
+  const brand = await fetchBrandBySlug(params.slug);
+  
+  if (!brand) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-6">
+          <Link href="/brands" className="text-primary-600 hover:underline flex items-center">
+            ← Back to Brands
+          </Link>
+        </div>
+        <div className="bg-white rounded-lg shadow-md p-8 text-center">
+          <h1 className="text-3xl font-bold mb-4">Brand Not Found</h1>
+          <p className="text-gray-700 mb-6">The brand you are looking for could not be found.</p>
+        </div>
+      </div>
+    );
+  }
+  
+  const recipes = await fetchRecipesByBrand(brand.name);
   
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6">
-        <Link href="/brands" className="text-primary hover:underline flex items-center">
+        <Link href="/brands" className="text-primary-600 hover:underline flex items-center">
           ← Back to Brands
         </Link>
       </div>
@@ -95,19 +78,10 @@ export default function BrandPage({ params }: Props) {
           
           <div className="md:w-2/3 p-6">
             <h1 className="text-3xl font-bold mb-4">{brand.name} Copycat Recipes</h1>
-            <p className="text-gray-700 mb-6">{brand.description}</p>
-            
-            <div className="flex items-center">
-              <span className="text-gray-600 mr-2">Official Website:</span>
-              <a 
-                href={brand.website} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="text-primary hover:underline"
-              >
-                {brand.website}
-              </a>
-            </div>
+            <p className="text-gray-700 mb-6">
+              Discover our collection of {brand.count} copycat recipes from {brand.name}. 
+              Make your favorite {brand.name} products at home with our easy-to-follow recipes.
+            </p>
           </div>
         </div>
       </div>
@@ -123,6 +97,7 @@ export default function BrandPage({ params }: Props) {
               title={recipe.title}
               category={recipe.category}
               image={recipe.image}
+              imageUrl={recipe.imageUrl}
               prepTime={recipe.prepTime}
               cookTime={recipe.cookTime}
               difficulty={recipe.difficulty}
@@ -138,7 +113,7 @@ export default function BrandPage({ params }: Props) {
           </p>
           <Link 
             href="/recipes" 
-            className="inline-block bg-primary text-white px-6 py-3 rounded-md font-medium hover:bg-primary-600 transition-colors"
+            className="inline-block bg-primary-600 text-white px-6 py-3 rounded-md font-medium hover:bg-primary-700 transition-colors"
           >
             Browse All Recipes
           </Link>

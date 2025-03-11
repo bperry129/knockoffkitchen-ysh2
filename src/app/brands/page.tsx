@@ -1,27 +1,21 @@
 import React from 'react';
 import Link from 'next/link';
 import { Metadata } from 'next';
+import { fetchBrands } from '@/lib/recipes';
 
 export const metadata: Metadata = {
-  title: 'Restaurant Brands - CopyCat Recipes',
-  description: 'Browse copycat recipes by restaurant brands. Find recipes from Olive Garden, Cheesecake Factory, Chipotle, and more of your favorite restaurant chains.',
+  title: 'Brands - CopyCat Recipes',
+  description: 'Browse copycat recipes by brands. Find recipes from your favorite food brands.',
 };
 
-// Brands data from DeepSeek-generated recipes
-const brands = [
-  { 
-    name: "Pringles", 
-    slug: "pringles", 
-    image: "/images/brands/pringles.jpg",
-    description: "Popular potato chip brand known for their distinctive saddle-shaped chips and tube packaging.",
-    count: 1
-  }
-];
-
-export default function BrandsPage() {
+// This is a Server Component, so we can use async/await directly
+export default async function BrandsPage() {
+  // Fetch brands from API
+  const brands = await fetchBrands();
+  
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Restaurant Brands</h1>
+      <h1 className="text-3xl font-bold mb-8">Brands</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {brands.map((brand) => (
@@ -43,7 +37,7 @@ export default function BrandsPage() {
                   {brand.count} recipes
                 </span>
               </div>
-              <p className="text-gray-600">{brand.description}</p>
+              <p className="text-gray-600">{brand.count} recipes available</p>
             </div>
           </Link>
         ))}

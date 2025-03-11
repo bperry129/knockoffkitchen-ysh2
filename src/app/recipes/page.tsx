@@ -1,58 +1,12 @@
 import React from 'react';
 import { RecipeCard } from '@/components/recipes/RecipeCard';
 import { Metadata } from 'next';
+import { fetchRecipes } from '@/lib/recipes';
 
 export const metadata: Metadata = {
   title: 'All Recipes - CopyCat Recipes',
-  description: 'Browse our collection of copycat recipes from your favorite restaurants. Easy to follow, tested recipes that taste just like the original.',
+  description: 'Browse our collection of copycat recipes from your favorite brands. Easy to follow, tested recipes that taste just like the original.',
 };
-
-// Function to extract recipe information from filename
-function extractRecipeInfo(filename: string): { title: string; slug: string } {
-  // Remove .json extension
-  const nameWithoutExt = filename.replace('.json', '');
-  
-  // Remove the UUID part (typically 8 characters after the last underscore)
-  const titleWithoutUUID = nameWithoutExt.replace(/_[a-f0-9]{8}$/, '');
-  
-  // Extract title and slug
-  let title = titleWithoutUUID
-    .replace(/_/g, ' ')
-    .replace(/Homemade_/g, 'Homemade ');
-  
-  // Create slug from title
-  const slug = title
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/[\s_-]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-  
-  return {
-    title,
-    slug
-  };
-}
-
-// DeepSeek AI-generated recipes
-const recipeFilenames = [
-  "Ultimate_Homemade_Pringles_Extra_Hot_Chili_&_Lime_Better_Than_The_Original_018b2846.json",
-  "Homemade_Tortillas_Chili_Cheese_Copycat_Recipe_ae4793d2.json",
-  "DIY_Pringles_Halloween_Original_Sour_Cream_&_Onion_Cheddar_Cheese_Variety_A_Homemade_Delight_a4be6818.json"
-];
-
-const recipes = recipeFilenames.map((filename, index) => {
-  const { title, slug } = extractRecipeInfo(filename);
-  return {
-    id: index + 1,
-    title,
-    category: "Chips",
-    image: "/images/chips.jpg", // Placeholder image
-    prepTime: "15-20 min",
-    cookTime: "20-30 min",
-    difficulty: "Medium",
-    slug
-  };
-});
 
 // Categories for filtering
 const categories = [
@@ -68,7 +22,10 @@ const categories = [
   "Breakfast"
 ];
 
-export default function RecipesPage() {
+export default async function RecipesPage() {
+  // Fetch recipes from API
+  const recipes = await fetchRecipes();
+  
   return (
     <>
       <main className="py-8">
@@ -102,6 +59,7 @@ export default function RecipesPage() {
                 title={recipe.title}
                 category={recipe.category}
                 image={recipe.image}
+                imageUrl={recipe.imageUrl}
                 prepTime={recipe.prepTime}
                 cookTime={recipe.cookTime}
                 difficulty={recipe.difficulty}
