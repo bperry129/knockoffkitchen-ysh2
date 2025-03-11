@@ -1,8 +1,8 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import { RecipeImage } from '@/components/ui/RecipeImage';
 import { DEFAULT_RECIPE_IMAGE } from '@/lib/recipes';
 
 interface RecipeCardProps {
@@ -38,12 +38,11 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
     >
       <div className="relative h-48 bg-gray-200">
         {/* If we have an image, display it, otherwise show a placeholder */}
-        <Image
+        <RecipeImage
           src={imageSrc}
           alt={title}
-          fill
+          title={`Homemade ${title} recipe - KnockoffKitchen.com`}
           className="object-cover"
-          unoptimized={imageUrl ? true : false} // Skip optimization for external URLs
         />
       </div>
       <div className="p-4">

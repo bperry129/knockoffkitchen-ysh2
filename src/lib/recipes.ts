@@ -28,7 +28,8 @@ export interface Recipe {
   }>;
   serving_suggestions: string;
   cost_comparison: string;
-  seo_meta_description: string;
+  introduction: string; // Full introduction text
+  seo_meta_description: string; // Truncated version for SEO meta tags
 }
 
 // Default placeholder image URL

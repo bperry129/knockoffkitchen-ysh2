@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { RecipeCard } from '@/components/recipes/RecipeCard';
 import { Metadata } from 'next';
-import { fetchBrandBySlug, fetchRecipesByBrand } from '@/lib/recipes';
+import { fetchBrandBySlug, fetchRecipesByBrand, DEFAULT_RECIPE_IMAGE } from '@/lib/recipes';
 
 type Props = {
   params: { slug: string }

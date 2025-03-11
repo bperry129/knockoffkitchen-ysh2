@@ -2,8 +2,8 @@ import React from 'react';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'About Us - CopyCat Recipes',
-  description: 'Learn about CopyCat Recipes, our mission to help you recreate your favorite restaurant dishes at home, and the team behind our recipe collection.',
+  title: 'About Us - KnockoffKitchen.com',
+  description: 'Learn about KnockoffKitchen.com, our mission to help you recreate your favorite restaurant dishes at home, and the team behind our recipe collection.',
 };
 
 export default function AboutPage() {
@@ -11,13 +11,13 @@ export default function AboutPage() {
     <>
       <main className="py-8">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl font-bold mb-8">About CopyCat Recipes</h1>
+          <h1 className="text-3xl font-bold mb-8">About KnockoffKitchen.com</h1>
           
           <div className="bg-white rounded-lg shadow-md overflow-hidden mb-12">
             <div className="p-6">
               <h2 className="text-2xl font-semibold mb-4">Our Mission</h2>
               <p className="text-gray-700 mb-6">
-                At CopyCat Recipes, we believe that everyone should be able to enjoy their favorite restaurant dishes in the comfort of their own home. Our mission is to provide accurate, easy-to-follow recipes that replicate the flavors of popular restaurant dishes, allowing you to save money while still enjoying the foods you love.
+                At KnockoffKitchen.com, we believe that everyone should be able to enjoy their favorite restaurant dishes in the comfort of their own home. Our mission is to provide accurate, easy-to-follow recipes that replicate the flavors of popular restaurant dishes, allowing you to save money while still enjoying the foods you love.
               </p>
               <p className="text-gray-700">
                 Whether you're looking to recreate a nostalgic childhood favorite, impress guests with a restaurant-quality meal, or simply satisfy a craving without leaving home, our collection of copycat recipes has you covered.
@@ -30,7 +30,7 @@ export default function AboutPage() {
               <div className="p-6">
                 <h2 className="text-2xl font-semibold mb-4">Our Story</h2>
                 <p className="text-gray-700 mb-4">
-                  CopyCat Recipes began in 2023 when our founder, a passionate home cook, became frustrated with the lack of reliable copycat recipes online. After spending countless hours perfecting recipes to match restaurant favorites, the idea for a dedicated copycat recipe website was born.
+                  KnockoffKitchen.com began in 2023 when our founder, a passionate home cook, became frustrated with the lack of reliable copycat recipes online. After spending countless hours perfecting recipes to match restaurant favorites, the idea for a dedicated copycat recipe website was born.
                 </p>
                 <p className="text-gray-700">
                   What started as a small collection of recipes has grown into a comprehensive database of restaurant favorites, all tested and perfected in home kitchens to ensure they're accessible to cooks of all skill levels.
@@ -42,7 +42,7 @@ export default function AboutPage() {
               <div className="p-6">
                 <h2 className="text-2xl font-semibold mb-4">Our Process</h2>
                 <p className="text-gray-700 mb-4">
-                  Every recipe on CopyCat Recipes goes through a rigorous development and testing process. We start by analyzing the original dish, identifying key ingredients and cooking techniques, and then develop a recipe that can be recreated in a home kitchen.
+                  Every recipe on KnockoffKitchen.com goes through a rigorous development and testing process. We start by analyzing the original dish, identifying key ingredients and cooking techniques, and then develop a recipe that can be recreated in a home kitchen.
                 </p>
                 <p className="text-gray-700">
                   Each recipe is tested multiple times by our team of home cooks to ensure accuracy, consistency, and most importantly, that it captures the essence of the original dish. We don't publish a recipe until we're confident it's as close to the restaurant version as possible.

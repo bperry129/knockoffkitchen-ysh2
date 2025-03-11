@@ -35,7 +35,7 @@ async def generate_recipe_async(session, product_name, brand_name, image_url):
     headers = {
         "Authorization": f"Bearer {OPENROUTER_API_KEY}",
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://copycat-recipes.com"
+        "HTTP-Referer": "https://knockoffkitchen.com"
     }
     
     # Check if brand name is already in product name to avoid duplication
@@ -45,7 +45,7 @@ async def generate_recipe_async(session, product_name, brand_name, image_url):
         full_product_name = f"{brand_name} {product_name}"
     
     # Create the prompt
-    product_info = f"Generate a unique, creative homemade copycat recipe for {full_product_name}. This should closely replicate the original product using common household ingredients while allowing for customization and improved nutritional value. Be extremely detailed and thorough in your analysis of the original product's flavor profile, texture, and appearance to create an authentic copycat recipe."
+    product_info = f"Generate a unique, creative homemade copycat recipe for {full_product_name}. This should closely replicate the original product using common household ingredients while allowing for customization and improved nutritional value. Be extremely detailed and thorough in your analysis of the original product's flavor profile, texture, and appearance to create an authentic copycat recipe. IMPORTANT: You must categorize this recipe into ONE of the following categories based on the product type: Sauce, Condiments, Chips, Cookies, Candy, Beverages, Snacks, Baked Goods, Breakfast, Dairy, Desserts, Frozen Foods, Meat, Seafood, Spices, Pasta, Soups, Dips, Dressings, Jams & Preserves, Pickles, Bread, Crackers, Cereal, or Other. Choose the most specific and appropriate category that best describes this product."
     
     title_info = f"""Create a UNIQUE, CATCHY, and CREATIVE title that contains relevant SEO keywords.
 Make sure the brand name appears EXACTLY ONCE in the title.
@@ -56,12 +56,13 @@ Example formats:
 - "Perfectly Crafted DIY {full_product_name} That Will Amaze Your Friends"
 """
     
-    intro_info = f"Write an EXTENSIVE, keyword-rich SEO description (at least 300-400 words) about {full_product_name}. Include phrases like 'homemade', 'make at home', 'copycat recipe', 'DIY', 'better than store-bought', etc. Thoroughly explain the history and popularity of {full_product_name}, analyze its unique flavor profile and texture characteristics, and detail the numerous benefits of making it at home (healthier ingredients, cost savings, customization options, etc.). Include personal anecdotes or stories about enjoying this product and why people love it so much. Make this introduction HIGHLY DETAILED and UNIQUE compared to other product descriptions."
+    intro_info = f"Write an EXTENSIVE, keyword-rich SEO description (at least 500-600 words) about {full_product_name}. Include phrases like 'homemade', 'make at home', 'copycat recipe', 'DIY', 'better than store-bought', 'kitchen hack', 'secret recipe', 'restaurant quality', 'gourmet', 'authentic taste', 'family favorite', 'crowd-pleaser', 'budget-friendly', 'pantry staples', 'easy recipe', 'perfect replica', 'taste test approved', 'customizable', 'allergen-free option', 'healthier alternative', 'no preservatives', 'fresh ingredients', 'artisanal', 'handcrafted', etc. Thoroughly explain the history and popularity of {full_product_name}, analyze its unique flavor profile and texture characteristics in great detail, and extensively cover the numerous benefits of making it at home (healthier ingredients, cost savings, customization options, allergen control, freshness, etc.). Include personal anecdotes or stories about enjoying this product and why people love it so much. Discuss how this recipe compares to the original product and what makes it special. Include regional variations or cultural significance if applicable. Describe the sensory experience in vivid detail - the aroma, texture, mouthfeel, and flavor notes. Mention seasonal variations or special occasions when this recipe is particularly popular. Discuss any nostalgic connections people have with the original product and how making it at home can recreate those memories. Make this introduction HIGHLY DETAILED and UNIQUE compared to other product descriptions, with strategic keyword placement throughout the text. Use varied sentence structures and engaging language to keep readers interested while maintaining excellent SEO value."
     
     # Use a non-f-string for the JSON example part
     json_example = """
 {
   "title": "Recipe title",
+  "category": "Recipe category (e.g., Sauce, Condiments, Chips, Cookies, etc.)",
   "introduction": "Introduction text",
   "prep_time": 15,
   "cook_time": 30,
@@ -85,6 +86,10 @@ Example formats:
     # Combine all parts of the prompt
     prompt = f"""
 {product_info}
+
+### **Recipe Category:**
+- If not already specified, suggest an appropriate category for this recipe from the following options: Sauce, Condiments, Chips, Cookies, Candy, Beverages, Snacks, Baked Goods, Breakfast, Dairy, Desserts, Frozen Foods, Meat, Seafood, Spices, Pasta, Soups, Dips, Dressings, Jams & Preserves, Pickles, Bread, Crackers, Cereal, or Other.
+- Explain briefly why this category is appropriate for this product.
 
 ### **Recipe Title:**
 - {title_info}
@@ -136,7 +141,7 @@ IMPORTANT: Include the image_url in your response: {image_url}
     data = {
         "model": "deepseek/deepseek-r1-distill-llama-70b",
         "messages": [
-            {"role": "system", "content": "You are a professional chef and recipe developer specializing in creating copycat recipes of popular branded products. IMPORTANT: Do NOT duplicate brand names in your recipes. If the product name already includes the brand (e.g., 'Heinz 57 Sauce'), do not add the brand name again (avoid 'Heinz Heinz 57 Sauce'). Provide extremely detailed nutritional comparisons between homemade and store-bought versions. Include specific cost breakdowns with actual dollar amounts for both homemade ingredients and store-bought products. Your content should be keyword-rich and SEO-optimized, focusing on terms like 'homemade', 'copycat recipe', 'make at home', etc."},
+            {"role": "system", "content": "You are a professional chef and recipe developer specializing in creating copycat recipes of popular branded products. IMPORTANT: Do NOT duplicate brand names in your recipes. If the product name already includes the brand (e.g., 'Heinz 57 Sauce'), do not add the brand name again (avoid 'Heinz Heinz 57 Sauce'). Provide extremely detailed nutritional comparisons between homemade and store-bought versions. Include specific cost breakdowns with actual dollar amounts for both homemade ingredients and store-bought products. Your content should be keyword-rich and SEO-optimized, focusing on terms like 'homemade', 'copycat recipe', 'make at home', 'DIY', 'kitchen hack', 'secret recipe', 'restaurant quality', 'gourmet', 'authentic taste', etc. Create unique, engaging content with high keyword density but natural-sounding text. Use variations of keywords and long-tail phrases throughout. Include detailed descriptions of flavors, textures, and aromas. Incorporate relevant semantic keywords to boost SEO value. Structure content with proper headings and subheadings for readability and SEO. IMPORTANT: You must accurately categorize each recipe into ONE specific category from the provided list based on the product type. Choose the most specific and appropriate category that best describes the product."},
             {"role": "user", "content": prompt}
         ],
         "temperature": 0.7,
@@ -147,40 +152,53 @@ IMPORTANT: Include the image_url in your response: {image_url}
     await asyncio.sleep(random.uniform(0.1, 0.5))
     
     try:
-        async with session.post("https://openrouter.ai/api/v1/chat/completions", 
-                               headers=headers, json=data) as response:
-            if response.status != 200:
-                error_text = await response.text()
-                logging.error(f"API error for {product_name}: {response.status} - {error_text}")
-                return None
-                
-            result = await response.json()
-            if 'choices' in result and len(result['choices']) > 0:
-                content = result['choices'][0]['message']['content']
-                
-                # Extract JSON content
-                try:
-                    json_start = content.find('{')
-                    json_end = content.rfind('}') + 1
-                    if json_start >= 0 and json_end > json_start:
-                        json_content = content[json_start:json_end]
-                        recipe_data = json.loads(json_content)
-                        
-                        # Ensure image_url is included
-                        if 'image_url' not in recipe_data:
-                            recipe_data['image_url'] = image_url
-                            
-                        return recipe_data
-                    else:
-                        logging.error(f"Could not find JSON content in response for {product_name}")
-                        return None
-                except json.JSONDecodeError as e:
-                    logging.error(f"JSON parsing error for {product_name}: {e}")
-                    logging.error(f"Raw response: {content}")
+        logging.info(f"Sending API request for {product_name}...")
+        try:
+            async with session.post("https://openrouter.ai/api/v1/chat/completions", 
+                                headers=headers, json=data, timeout=60) as response:
+                if response.status != 200:
+                    error_text = await response.text()
+                    logging.error(f"API error for {product_name}: {response.status} - {error_text}")
                     return None
-            else:
-                logging.error(f"No choices in response for {product_name}")
-                return None
+                
+                logging.info(f"Received API response for {product_name}, parsing JSON...")
+                result = await response.json()
+                logging.info(f"JSON parsed successfully for {product_name}")
+                
+                if 'choices' in result and len(result['choices']) > 0:
+                    content = result['choices'][0]['message']['content']
+                    logging.info(f"Content extracted for {product_name}, length: {len(content)}")
+                    
+                    # Extract JSON content
+                    try:
+                        json_start = content.find('{')
+                        json_end = content.rfind('}') + 1
+                        if json_start >= 0 and json_end > json_start:
+                            json_content = content[json_start:json_end]
+                            recipe_data = json.loads(json_content)
+                            
+                            # Ensure image_url is included with SEO-friendly metadata
+                            if 'image_url' not in recipe_data:
+                                recipe_data['image_url'] = image_url
+                            
+                            # Add SEO-friendly image metadata
+                            recipe_data['image_alt'] = f"Homemade {product_name} recipe - KnockoffKitchen.com"
+                            recipe_data['image_title'] = f"Homemade {product_name} recipe - Better than the original!"
+                                
+                            return recipe_data
+                        else:
+                            logging.error(f"Could not find JSON content in response for {product_name}")
+                            return None
+                    except json.JSONDecodeError as e:
+                        logging.error(f"JSON parsing error for {product_name}: {e}")
+                        logging.error(f"Raw response: {content}")
+                        return None
+                else:
+                    logging.error(f"No choices in response for {product_name}")
+                    return None
+        except asyncio.TimeoutError:
+            logging.error(f"Timeout error for {product_name}")
+            return None
     except Exception as e:
         logging.error(f"Request error for {product_name}: {e}")
         return None
@@ -194,6 +212,10 @@ def parse_recipe_data(recipe_data: Dict[str, Any]) -> Dict[str, Any]:
     
     # Basic fields
     parsed_data["title"] = recipe_data.get("title", "")
+    
+    # Extract category if provided by the AI
+    if "category" in recipe_data:
+        parsed_data["category"] = recipe_data.get("category", "")
     parsed_data["prep_time"] = int(recipe_data.get("prep_time", 0))
     parsed_data["cook_time"] = int(recipe_data.get("cook_time", 0))
     parsed_data["total_time"] = int(recipe_data.get("total_time", 0))
@@ -238,8 +260,15 @@ def parse_recipe_data(recipe_data: Dict[str, Any]) -> Dict[str, Any]:
     # Other fields
     parsed_data["serving_suggestions"] = "\n".join(recipe_data.get("serving_suggestions", []))
     parsed_data["cost_comparison"] = recipe_data.get("cost_comparison", "")
+    
+    # Store the full introduction text and a truncated version for SEO meta tags
+    parsed_data["introduction"] = recipe_data.get("introduction", "")
     parsed_data["seo_meta_description"] = recipe_data.get("introduction", "")[:160] if recipe_data.get("introduction") else ""
     parsed_data["image_url"] = recipe_data.get("image_url", "")
+    
+    # Add SEO-friendly image metadata
+    parsed_data["image_alt"] = recipe_data.get("image_alt", f"Homemade {recipe_data.get('title', '')} recipe - KnockoffKitchen.com")
+    parsed_data["image_title"] = recipe_data.get("image_title", f"Homemade {recipe_data.get('title', '')} recipe - Better than the original!")
     
     return parsed_data
 

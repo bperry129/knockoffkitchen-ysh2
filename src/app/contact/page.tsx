@@ -2,8 +2,8 @@ import React from 'react';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Contact Us - CopyCat Recipes',
-  description: 'Get in touch with the CopyCat Recipes team. We welcome your feedback, recipe suggestions, and questions.',
+  title: 'Contact Us - KnockoffKitchen.com',
+  description: 'Get in touch with the KnockoffKitchen.com team. We welcome your feedback, recipe suggestions, and questions.',
 };
 
 export default function ContactPage() {
@@ -107,8 +107,8 @@ export default function ContactPage() {
                       </div>
                       <div className="ml-4">
                         <h3 className="text-lg font-medium text-gray-900">Email</h3>
-                        <p className="mt-1 text-gray-600">info@copycatrecipes.com</p>
-                        <p className="mt-1 text-gray-600">support@copycatrecipes.com</p>
+                        <p className="mt-1 text-gray-600">info@knockoffkitchen.com</p>
+                        <p className="mt-1 text-gray-600">support@knockoffkitchen.com</p>
                       </div>
                     </div>
                     

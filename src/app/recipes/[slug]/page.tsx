@@ -2,7 +2,8 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { fetchRecipeBySlug } from '@/lib/recipes';
+import { fetchRecipeBySlug, DEFAULT_RECIPE_IMAGE } from '@/lib/recipes';
+import { RecipeImage } from '@/components/ui/RecipeImage';
 
 type Props = {
   params: { slug: string }
@@ -13,16 +14,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   
   if (!recipe) {
     return {
-      title: 'Recipe Not Found - CopyCat Recipes',
+      title: 'Recipe Not Found - KnockoffKitchen.com',
       description: 'The recipe you are looking for could not be found.',
     };
   }
   
   return {
-    title: `${recipe.title} - CopyCat Recipes`,
+    title: `${recipe.title} - KnockoffKitchen.com`,
     description: recipe.seo_meta_description || recipe.title,
     openGraph: {
-      title: `${recipe.title} - CopyCat Recipes`,
+      title: `${recipe.title} - KnockoffKitchen.com`,
       description: recipe.seo_meta_description || recipe.title,
       type: 'article',
       images: [
@@ -30,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           url: recipe.imageUrl || '/images/knockoff.png',
           width: 1200,
           height: 630,
-          alt: recipe.title,
+          alt: `Homemade ${recipe.title} recipe - KnockoffKitchen.com`,
         },
       ],
     },
@@ -78,12 +79,11 @@ export default async function RecipePage({ params }: Props) {
             <div className="md:flex">
               <div className="md:w-1/2">
                 <div className="relative h-64 md:h-full bg-gray-200">
-                  <Image
-                    src={recipe.imageUrl || '/images/knockoff.png'}
+                  <RecipeImage
+                    src={recipe.imageUrl || DEFAULT_RECIPE_IMAGE}
                     alt={recipe.title}
-                    fill
+                    title={`Homemade ${recipe.title} recipe - KnockoffKitchen.com`}
                     className="object-cover"
-                    unoptimized={recipe.imageUrl ? true : false} // Skip optimization for external URLs
                   />
                 </div>
               </div>
@@ -93,7 +93,18 @@ export default async function RecipePage({ params }: Props) {
                   {recipe.category}
                 </span>
                 <h1 className="text-3xl font-bold mt-2 mb-4">{recipe.title}</h1>
-                <p className="text-gray-700 mb-6">{recipe.seo_meta_description}</p>
+                <div className="text-gray-700 mb-6">
+                  {/* Use the full introduction if available, otherwise fall back to seo_meta_description */}
+                  {recipe.introduction ? (
+                    <div className="prose max-w-none">
+                      {recipe.introduction.split('\n\n').map((paragraph, idx) => (
+                        <p key={idx} className="mb-4">{paragraph}</p>
+                      ))}
+                    </div>
+                  ) : (
+                    <p>{recipe.seo_meta_description}</p>
+                  )}
+                </div>
                 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                   <div className="text-center p-3 bg-gray-50 rounded-lg">

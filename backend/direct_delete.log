@@ -1,0 +1,9 @@
+2025-03-11 14:36:13,501 - INFO - Connecting to the database...
+2025-03-11 14:36:34,544 - ERROR - Error deleting recipes: connection to server at "172.17.0.2", port 5432 failed: Connection timed out (0x0000274C/10060)
+	Is the server running on that host and accepting TCP/IP connections?
+
+2025-03-11 14:36:34,545 - ERROR - Failed to delete all recipes
+2025-03-11 14:37:16,313 - INFO - Creating database engine...
+2025-03-11 14:37:16,422 - INFO - Connecting to the database...
+2025-03-11 14:37:16,455 - ERROR - Error deleting data: [Errno 11003] getaddrinfo failed
+2025-03-11 14:37:16,455 - ERROR - Failed to delete data

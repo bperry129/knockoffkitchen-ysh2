@@ -37,7 +37,7 @@ export const Header = () => {
         <div className="flex items-center justify-between py-4">
           <div className="flex items-center">
             <Link href="/" className="text-2xl font-bold text-primary-600">
-              CopyCat Recipes
+              KnockoffKitchen.com
             </Link>
             {recipeCount > 0 && (
               <span className="ml-3 bg-primary-100 text-primary-800 text-xs font-medium px-2.5 py-0.5 rounded-full">

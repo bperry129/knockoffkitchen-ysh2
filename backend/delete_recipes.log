@@ -1,0 +1,5 @@
+2025-03-11 14:35:30,553 - ERROR - Database connection failed: [Errno 11003] getaddrinfo failed
+2025-03-11 14:35:30,553 - INFO - Attempting to start the database container...
+2025-03-11 14:35:30,553 - ERROR - docker-compose.yml not found
+2025-03-11 14:35:30,554 - ERROR - Failed to start the database container
+2025-03-11 14:35:30,556 - ERROR - Failed to delete all recipes

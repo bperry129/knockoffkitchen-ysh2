@@ -7,7 +7,7 @@ from typing import Dict, Any, Optional
 OPENROUTER_API_KEY = "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"
 OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
-def generate_recipe(product_name, brand_name, category):
+def generate_recipe(product_name, brand_name, category=None):
     """
     Generate a recipe using OpenRouter's DeepSeek model
     
@@ -21,13 +21,20 @@ def generate_recipe(product_name, brand_name, category):
     """
     # Create the prompt with the product and brand information
     product_info = f"Generate a unique, creative homemade copycat recipe for {brand_name} {product_name}. This should closely replicate the original product using common household ingredients while allowing for customization and improved nutritional value. Be extremely detailed and thorough in your analysis of the original product's flavor profile, texture, and appearance to create an authentic copycat recipe."
+    
+    # Include category information if provided
+    if category:
+        product_info += f" This recipe belongs to the '{category}' category."
+    else:
+        product_info += " IMPORTANT: You must categorize this recipe into ONE of the following categories based on the product type: Sauce, Condiments, Chips, Cookies, Candy, Beverages, Snacks, Baked Goods, Breakfast, Dairy, Desserts, Frozen Foods, Meat, Seafood, Spices, Pasta, Soups, Dips, Dressings, Jams & Preserves, Pickles, Bread, Crackers, Cereal, or Other. Choose the most specific and appropriate category that best describes this product."
     title_info = f"Create a UNIQUE, CATCHY, and CREATIVE title that contains relevant SEO keywords. ALWAYS include the brand name before the product name, but make each title distinctly different from other recipes. Be creative with adjectives and phrases. Example formats: \"Ultimate Homemade {brand_name} {product_name}: Better Than The Original\", \"Secret Recipe: Authentic {brand_name} {product_name} Made At Home\", \"Perfectly Crispy DIY {brand_name} {product_name} That Will Amaze Your Friends\", etc."
-    intro_info = f"Write an EXTENSIVE, keyword-rich SEO description (at least 300-400 words) about {brand_name} {product_name}. Include phrases like 'homemade', 'make at home', 'copycat recipe', 'DIY', 'better than store-bought', etc. Thoroughly explain the history and popularity of {brand_name} {product_name}, analyze its unique flavor profile and texture characteristics, and detail the numerous benefits of making it at home (healthier ingredients, cost savings, customization options, etc.). Include personal anecdotes or stories about enjoying this product and why people love it so much. Make this introduction HIGHLY DETAILED and UNIQUE compared to other product descriptions."
+    intro_info = f"Write an EXTENSIVE, keyword-rich SEO description (at least 500-600 words) about {brand_name} {product_name}. Include phrases like 'homemade', 'make at home', 'copycat recipe', 'DIY', 'better than store-bought', 'kitchen hack', 'secret recipe', 'restaurant quality', 'gourmet', 'authentic taste', 'family favorite', 'crowd-pleaser', 'budget-friendly', 'pantry staples', 'easy recipe', 'perfect replica', 'taste test approved', 'customizable', 'allergen-free option', 'healthier alternative', 'no preservatives', 'fresh ingredients', 'artisanal', 'handcrafted', etc. Thoroughly explain the history and popularity of {brand_name} {product_name}, analyze its unique flavor profile and texture characteristics in great detail, and extensively cover the numerous benefits of making it at home (healthier ingredients, cost savings, customization options, allergen control, freshness, etc.). Include personal anecdotes or stories about enjoying this product and why people love it so much. Discuss how this recipe compares to the original product and what makes it special. Include regional variations or cultural significance if applicable. Describe the sensory experience in vivid detail - the aroma, texture, mouthfeel, and flavor notes. Mention seasonal variations or special occasions when this recipe is particularly popular. Discuss any nostalgic connections people have with the original product and how making it at home can recreate those memories. Make this introduction HIGHLY DETAILED and UNIQUE compared to other product descriptions, with strategic keyword placement throughout the text. Use varied sentence structures and engaging language to keep readers interested while maintaining excellent SEO value."
     
     # Use a non-f-string for the JSON example part
     json_example = """
 {
   "title": "Recipe title",
+  "category": "Recipe category (e.g., Sauce, Condiments, Chips, Cookies, etc.)",
   "introduction": "Introduction text",
   "prep_time": 15,
   "cook_time": 30,
@@ -50,6 +57,10 @@ def generate_recipe(product_name, brand_name, category):
     # Combine all parts of the prompt
     prompt = f"""
 {product_info}
+
+### **Recipe Category:**
+- If not already specified, suggest an appropriate category for this recipe from the following options: Sauce, Condiments, Chips, Cookies, Candy, Beverages, Snacks, Baked Goods, Breakfast, Dairy, Desserts, Frozen Foods, Meat, Seafood, Spices, Pasta, or Other.
+- Explain briefly why this category is appropriate for this product.
 
 ### **Recipe Title:**
 - {title_info}
@@ -99,13 +110,13 @@ IMPORTANT: Format your response as a JSON object with the following structure:
     headers = {
         "Authorization": f"Bearer {OPENROUTER_API_KEY}",
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://copycat-recipes.com"  # Replace with your site URL
+        "HTTP-Referer": "https://knockoffkitchen.com"  # Replace with your site URL
     }
     
     data = {
         "model": "deepseek/deepseek-r1-distill-llama-70b",
         "messages": [
-            {"role": "system", "content": "You are a professional chef and recipe developer specializing in creating copycat recipes of popular branded products. ALWAYS include the brand name with the product name in all references (e.g., 'Pringles Extra Hot Chili & Lime' not just 'Extra Hot Chili & Lime'). Provide extremely detailed nutritional comparisons between homemade and store-bought versions. Include specific cost breakdowns with actual dollar amounts for both homemade ingredients and store-bought products. Your content should be keyword-rich and SEO-optimized, focusing on terms like 'homemade', 'copycat recipe', 'make at home', etc."},
+            {"role": "system", "content": "You are a professional chef and recipe developer specializing in creating copycat recipes of popular branded products. ALWAYS include the brand name with the product name in all references (e.g., 'Pringles Extra Hot Chili & Lime' not just 'Extra Hot Chili & Lime'). Provide extremely detailed nutritional comparisons between homemade and store-bought versions. Include specific cost breakdowns with actual dollar amounts for both homemade ingredients and store-bought products. Your content should be keyword-rich and SEO-optimized, focusing on terms like 'homemade', 'copycat recipe', 'make at home', 'DIY', 'kitchen hack', 'secret recipe', 'restaurant quality', 'gourmet', 'authentic taste', etc. Create unique, engaging content with high keyword density but natural-sounding text. Use variations of keywords and long-tail phrases throughout. Include detailed descriptions of flavors, textures, and aromas. Incorporate relevant semantic keywords to boost SEO value. Structure content with proper headings and subheadings for readability and SEO. IMPORTANT: You must accurately categorize each recipe into ONE specific category from the provided list based on the product type. Choose the most specific and appropriate category that best describes the product."},
             {"role": "user", "content": prompt}
         ],
         "temperature": 0.7,
@@ -174,6 +185,10 @@ def parse_recipe_data(recipe_data: Dict[str, Any]) -> Dict[str, Any]:
     
     # Basic fields
     parsed_data["title"] = recipe_data.get("title", "")
+    
+    # Extract category if provided by the AI
+    if "category" in recipe_data:
+        parsed_data["category"] = recipe_data.get("category", "")
     parsed_data["prep_time"] = int(recipe_data.get("prep_time", 0))
     parsed_data["cook_time"] = int(recipe_data.get("cook_time", 0))
     parsed_data["total_time"] = int(recipe_data.get("total_time", 0))
@@ -218,6 +233,9 @@ def parse_recipe_data(recipe_data: Dict[str, Any]) -> Dict[str, Any]:
     # Other fields
     parsed_data["serving_suggestions"] = "\n".join(recipe_data.get("serving_suggestions", []))
     parsed_data["cost_comparison"] = recipe_data.get("cost_comparison", "")
+    
+    # Store the full introduction text and a truncated version for SEO meta tags
+    parsed_data["introduction"] = recipe_data.get("introduction", "")
     parsed_data["seo_meta_description"] = recipe_data.get("introduction", "")[:160] if recipe_data.get("introduction") else ""
     
     return parsed_data

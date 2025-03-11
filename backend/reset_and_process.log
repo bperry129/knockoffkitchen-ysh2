@@ -1,0 +1,4 @@
+2025-03-11 14:31:33,358 - INFO - Deleting all recipes from the database...
+2025-03-11 14:31:34,463 - ERROR - Error deleting recipes: [Errno 11003] getaddrinfo failed
+2025-03-11 14:31:34,464 - ERROR - Failed to delete all recipes from the database
+2025-03-11 14:31:34,464 - ERROR - Failed to delete all recipes, aborting

@@ -9,7 +9,7 @@ export const Footer: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-lg font-semibold mb-4">CopyCat Recipes</h3>
+            <h3 className="text-lg font-semibold mb-4">KnockoffKitchen.com</h3>
             <p className="text-gray-600 mb-4">
               Discover and cook perfect replicas of your favorite restaurant dishes with our collection of copycat recipes.
             </p>
@@ -60,7 +60,7 @@ export const Footer: React.FC = () => {
         </div>
         
         <div className="border-t border-gray-200 mt-8 pt-8 text-center text-gray-500">
-          <p>&copy; {new Date().getFullYear()} CopyCat Recipes. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} KnockoffKitchen.com. All rights reserved.</p>
         </div>
       </div>
     </footer>

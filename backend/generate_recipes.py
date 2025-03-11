@@ -163,8 +163,66 @@ def get_random_faqs(count=3):
     """Get a random selection of FAQs"""
     return random.sample(SAMPLE_FAQS, min(count, len(SAMPLE_FAQS)))
 
-def generate_recipe_data(product_name, brand_name, category):
+# Predefined categories for automatic categorization
+PRODUCT_CATEGORIES = {
+    "Sauce": ["sauce", "ketchup", "mustard", "mayo", "dressing", "gravy", "marinade"],
+    "Condiments": ["relish", "pickle", "spread", "jam", "jelly", "honey", "syrup"],
+    "Chips": ["chips", "crisps", "crackers", "wafers"],
+    "Cookies": ["cookie", "biscuit", "wafer", "oreo", "shortbread"],
+    "Candy": ["candy", "chocolate", "gum", "mint", "sweet", "lollipop", "toffee"],
+    "Beverages": ["drink", "soda", "pop", "juice", "tea", "coffee", "water", "beer", "wine"],
+    "Snacks": ["snack", "popcorn", "pretzel", "nuts", "trail mix", "granola"],
+    "Baked Goods": ["bread", "roll", "bun", "muffin", "cake", "pastry", "donut", "bagel"],
+    "Breakfast": ["cereal", "oatmeal", "pancake", "waffle", "syrup"],
+    "Dairy": ["milk", "cheese", "yogurt", "butter", "cream", "ice cream"],
+    "Desserts": ["dessert", "pudding", "pie", "brownie", "ice cream"],
+    "Frozen Foods": ["frozen", "pizza", "ice cream", "popsicle"],
+    "Meat": ["beef", "chicken", "pork", "turkey", "sausage", "bacon", "ham"],
+    "Seafood": ["fish", "shrimp", "crab", "lobster", "salmon", "tuna"],
+    "Spices": ["spice", "seasoning", "herb", "salt", "pepper"],
+    "Pasta": ["pasta", "noodle", "spaghetti", "macaroni", "ramen"]
+}
+
+def categorize_product(product_name, brand_name, provided_category=None):
+    """
+    Automatically categorize a product based on its name and brand
+    
+    Args:
+        product_name: Name of the product
+        brand_name: Name of the brand
+        provided_category: Category provided in the data (if any)
+        
+    Returns:
+        String containing the determined category
+    """
+    # If a category was provided and it's not empty, use it as a starting point
+    if provided_category and provided_category.strip():
+        # Check if the provided category matches or is similar to one of our predefined categories
+        for category, keywords in PRODUCT_CATEGORIES.items():
+            if provided_category.lower() in [cat.lower() for cat in [category] + keywords]:
+                return category
+    
+    # If no category was provided or it didn't match our predefined categories,
+    # try to determine the category based on the product name
+    product_full = f"{product_name} {brand_name}".lower()
+    
+    for category, keywords in PRODUCT_CATEGORIES.items():
+        for keyword in keywords:
+            if keyword.lower() in product_full:
+                return category
+    
+    # If no match was found, return a default category
+    return "Other"
+
+def generate_recipe_data(product_name, brand_name, category=None):
     """Generate recipe data for a product"""
+    # Automatically categorize the product if no category is provided or if it's empty
+    if not category or not category.strip():
+        category = categorize_product(product_name, brand_name)
+    else:
+        # Try to standardize the provided category
+        category = categorize_product(product_name, brand_name, category)
+    
     # Get basic ingredients based on flavor
     ingredients = get_ingredients_for_flavor(product_name)
     
@@ -254,9 +312,12 @@ async def process_csv(csv_path, limit=None, dry_run=False, use_ai=True):
             try:
                 product_name = row['Product']
                 brand_name = row['Brand']
-                category = row['Category']
+                provided_category = row['Category']
                 
-                print(f"Processing: {product_name} - {brand_name} - {category}")
+                # Automatically categorize the product
+                category = categorize_product(product_name, brand_name, provided_category)
+                
+                print(f"Processing: {product_name} - {brand_name} - Category: {category} (Original: {provided_category})")
                 
                 # Generate recipe data based on AI or template
                 if use_ai:
@@ -271,6 +332,8 @@ async def process_csv(csv_path, limit=None, dry_run=False, use_ai=True):
                             
                             # Add brand and category information
                             recipe_data["brand_name"] = brand_name
+                            
+                            # Use the automatically categorized category
                             recipe_data["category"] = category
                             
                             print(f"Successfully generated AI recipe for {product_name}")

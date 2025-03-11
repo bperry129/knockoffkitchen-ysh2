@@ -1,10 +1,10 @@
-# CopyCat Recipes
+# KnockoffKitchen.com
 
 A web application that generates copycat recipes for popular branded food products using AI.
 
 ## Overview
 
-CopyCat Recipes is a Next.js application that uses AI to generate detailed copycat recipes for popular branded food products. The application includes:
+KnockoffKitchen.com is a Next.js application that uses AI to generate detailed copycat recipes for popular branded food products. The application includes:
 
 - A frontend built with Next.js, React, and Tailwind CSS
 - A backend with Python and SQLAlchemy for database management
