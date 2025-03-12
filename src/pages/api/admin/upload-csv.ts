@@ -30,11 +30,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
     
     // Get the uploaded file
-    const file = files.file as formidable.File;
+    const fileField = files.file;
     
-    if (!file) {
+    if (!fileField) {
       return res.status(400).json({ error: 'No file uploaded' });
     }
+    
+    // Handle both single file and array of files
+    const file = Array.isArray(fileField) ? fileField[0] : fileField;
     
     // Check if file is a CSV
     if (!file.originalFilename?.endsWith('.csv')) {
