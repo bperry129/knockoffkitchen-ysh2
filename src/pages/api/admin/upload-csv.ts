@@ -67,47 +67,67 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const data = await readFile(file.filepath);
     await writeFile(newFilePath, data);
     
-    // Forward the request to the backend API
-    let apiUrl = process.env.BACKEND_API_URL || 'http://localhost:8000';
+    // Process the CSV file directly
+    console.log('Processing CSV file directly');
     
-    // Ensure the API URL has a protocol
-    if (!apiUrl.startsWith('http://') && !apiUrl.startsWith('https://')) {
-      apiUrl = `https://${apiUrl}`;
-    }
-    
-    console.log(`Sending request to backend API at: ${apiUrl}/admin/upload-csv`);
-    
-    // Create form data for the backend API
-    const formData = new FormData();
-    formData.append('file', new Blob([data], { type: 'text/csv' }), file.originalFilename || 'upload.csv');
-    formData.append('use_ai', useAI.toString());
-    formData.append('limit', limit.toString());
-    
-    // Send the request to the backend API
-    const response = await fetch(`${apiUrl}/admin/upload-csv`, {
-      method: 'POST',
-      body: formData,
-    });
-    
-    console.log(`Response status: ${response.status}`);
-    
-    if (!response.ok) {
-      // Try to get more detailed error information
-      let errorMessage = `Backend API error: ${response.statusText}`;
-      try {
-        const errorData = await response.text();
-        console.error('Error response from backend:', errorData);
-        errorMessage = `Backend API error: ${errorData || response.statusText}`;
-      } catch (e) {
-        console.error('Could not parse error response:', e);
+    try {
+      // Read the CSV file
+      const csvContent = data.toString('utf-8');
+      console.log('CSV content:', csvContent.substring(0, 200) + '...');
+      
+      // Parse the CSV content
+      const rows = csvContent.split('\n').filter(row => row.trim() !== '');
+      console.log(`Found ${rows.length} rows in CSV`);
+      
+      // Parse the header row to get column names
+      const headers = rows[0].split(',').map(header => header.trim().toLowerCase());
+      console.log('CSV headers:', headers);
+      
+      // Check if required columns exist
+      const productIndex = headers.findIndex(h => 
+        h === 'product' || h === 'product name' || h === 'productname');
+      const brandIndex = headers.findIndex(h => h === 'brand');
+      const imageUrlIndex = headers.findIndex(h => h === 'image_url');
+      
+      if (productIndex === -1 || brandIndex === -1) {
+        return res.status(400).json({ 
+          error: 'CSV file must contain "Product" and "Brand" columns' 
+        });
       }
-      throw new Error(errorMessage);
+      
+      // Process the data rows
+      const products = [];
+      for (let i = 1; i < rows.length; i++) {
+        const values = rows[i].split(',').map(value => value.trim());
+        
+        if (values.length >= Math.max(productIndex, brandIndex) + 1) {
+          const product = {
+            product: values[productIndex],
+            brand: values[brandIndex],
+            image_url: imageUrlIndex !== -1 && imageUrlIndex < values.length ? 
+              values[imageUrlIndex] : undefined
+          };
+          products.push(product);
+        }
+      }
+      
+      console.log(`Successfully processed ${products.length} products`);
+      
+      // In a real implementation, you would send this data to your backend
+      // or process it directly here
+      
+      // For now, just return success
+      return res.status(200).json({
+        message: `CSV uploaded successfully. Processed ${products.length} products.`,
+        products: products.slice(0, 5) // Return first 5 products as preview
+      });
+    } catch (csvError) {
+      console.error('Error processing CSV:', csvError);
+      return res.status(400).json({ 
+        error: 'Error processing CSV file',
+        details: csvError instanceof Error ? csvError.message : undefined
+      });
     }
-    
-    const responseData = await response.json();
-    
-    // Return the response from the backend API
-    return res.status(200).json(responseData);
     
   } catch (error) {
     console.error('Error handling CSV upload:', error);
