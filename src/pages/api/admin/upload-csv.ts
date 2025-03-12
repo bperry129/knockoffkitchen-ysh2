@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import formidable from 'formidable';
 import fs from 'fs';
-import fetch from 'node-fetch';
+// Use built-in fetch instead of node-fetch for better Next.js compatibility
 
 export const config = {
   api: {
@@ -30,15 +30,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
     // Parse the incoming form data
     const form = new formidable.IncomingForm();
-    const [fields, files] = await new Promise((resolve, reject) => {
+    const formParseResult = await new Promise<[formidable.Fields, formidable.Files]>((resolve, reject) => {
       form.parse(req, (err, fields, files) => {
         if (err) reject(err);
         resolve([fields, files]);
       });
     });
+    
+    const [fields, files] = formParseResult;
 
     // Get the file
-    const file = files.file;
+    const file = files.file?.[0]; // formidable v3 returns arrays
     if (!file) {
       console.error('No file uploaded');
       return res.status(400).json({ error: 'No file uploaded' });
@@ -48,9 +50,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Create a FormData object to send to the backend
     const formData = new FormData();
-    formData.append('file', fs.createReadStream(file.filepath), file.originalFilename);
-    formData.append('use_ai', fields.use_ai || 'true');
-    formData.append('limit', fields.limit || '0');
+    
+    // Read the file content instead of using fs.createReadStream
+    const fileContent = fs.readFileSync(file.filepath);
+    const blob = new Blob([fileContent]);
+    
+    formData.append('file', blob, file.originalFilename || 'upload.csv');
+    formData.append('use_ai', String(fields.use_ai?.[0] || 'true'));
+    formData.append('limit', String(fields.limit?.[0] || '0'));
 
     // Get the backend URL from environment variables
     const backendUrl = process.env.BACKEND_API_URL || 'https://bperry129.pythonanywhere.com';
@@ -66,7 +73,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     ];
     
     let successfulResponse = null;
-    let lastError = null;
+    let lastError: any = null;
     
     // Try each endpoint until one works
     for (const endpoint of endpoints) {
@@ -79,7 +86,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           method: 'POST',
           body: formData,
           headers: {
-            'Origin': req.headers.origin || 'https://knockoffkitchen.com',
+            'Origin': req.headers.origin as string || 'https://knockoffkitchen.com',
           }
         });
         
@@ -96,7 +103,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             text: errorText
           };
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error(`Error trying ${uploadUrl}: ${error.message}`);
         lastError = error;
       }
@@ -117,7 +124,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       error: lastError ? `Last error: ${JSON.stringify(lastError)}` : 'Unknown error'
     });
     
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error processing upload:', error);
     return res.status(500).json({ 
       error: 'Error processing upload',
