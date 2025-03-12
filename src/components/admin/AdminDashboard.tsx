@@ -143,7 +143,8 @@ const AdminDashboard: React.FC = () => {
             backendFormData.append('limit', formState.limit.toString());
             
             // Send the request directly to the PythonAnywhere backend
-            const backendUrl = 'https://bperry129.pythonanywhere.com/admin/upload-csv';
+            // Try the base URL since we don't know the exact endpoint
+            const backendUrl = 'https://bperry129.pythonanywhere.com/';
             const backendResponse = await fetch(backendUrl, {
               method: 'POST',
               body: backendFormData,
