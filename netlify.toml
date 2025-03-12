@@ -1,0 +1,22 @@
+# Netlify configuration file
+
+[build]
+  # Directory to publish (Next.js default)
+  publish = ".next"
+  # Build command
+  command = "npm run build"
+
+# Handle Next.js routing
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Environment variables
+[build.environment]
+  BACKEND_API_URL = "https://bperry129.pythonanywhere.com"
