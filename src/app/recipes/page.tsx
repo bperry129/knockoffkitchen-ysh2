@@ -4,17 +4,8 @@ import { RecipeSort } from '@/components/recipes/RecipeSort';
 import { Metadata } from 'next';
 import { fetchRecipes, searchRecipes, Recipe } from '@/lib/recipes';
 
-// Define the props interface for Next.js pages
-interface PageProps {
-  params: { [key: string]: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-}
-
 // Generate dynamic metadata based on search query
-export async function generateMetadata(
-  props: PageProps
-): Promise<Metadata> {
-  const { searchParams } = props;
+export async function generateMetadata({ searchParams }) {
   // Access searchParams safely
   const searchQuery = typeof searchParams.search === 'string' ? searchParams.search : undefined;
   
@@ -52,10 +43,7 @@ function sortRecipes(recipes: Recipe[], sortBy: string): Recipe[] {
   }
 }
 
-export default async function RecipesPage(
-  props: PageProps
-) {
-  const { searchParams } = props;
+export default async function RecipesPage({ searchParams }) {
   // Get search query and sort parameters
   const searchQuery = typeof searchParams.search === 'string' ? searchParams.search : undefined;
   const sortBy = typeof searchParams.sort === 'string' ? searchParams.sort : 'alphabetical';

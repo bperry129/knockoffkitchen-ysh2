@@ -6,16 +6,7 @@ import { fetchRecipeBySlug, DEFAULT_RECIPE_IMAGE } from '@/lib/recipes';
 import { RecipeImage } from '@/components/ui/RecipeImage';
 import Script from 'next/script';
 
-// Define the props interface for Next.js pages
-interface PageProps {
-  params: { [key: string]: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-}
-
-export async function generateMetadata(
-  props: PageProps
-): Promise<Metadata> {
-  const { params } = props;
+export async function generateMetadata({ params }) {
   const slug = params.slug;
   const recipe = await fetchRecipeBySlug(slug);
   
@@ -61,11 +52,8 @@ export async function generateMetadata(
   };
 }
 
-export default async function RecipePage(
-  props: PageProps
-) {
-  const { params } = props;
-  const slug = params.slug as string;
+export default async function RecipePage({ params }) {
+  const slug = params.slug;
   const recipe = await fetchRecipeBySlug(slug);
   
   // Generate JSON-LD structured data for recipe
