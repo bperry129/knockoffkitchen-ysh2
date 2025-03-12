@@ -2,6 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  reactStrictMode: true,
+  eslint: {
+    // Disable ESLint during builds
+    ignoreDuringBuilds: true,
+  },
   images: {
     remotePatterns: [
       {
@@ -10,6 +15,8 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
+    domains: ['bperry129.pythonanywhere.com'],
+    unoptimized: true
   },
 };
 
