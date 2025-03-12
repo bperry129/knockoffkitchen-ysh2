@@ -4,7 +4,7 @@ import { RecipeCard } from '@/components/recipes/RecipeCard';
 import { Metadata } from 'next';
 import { fetchBrandBySlug, fetchRecipesByBrand } from '@/lib/recipes';
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params }: { params: any }) {
   const slug = params.slug;
   const brand = await fetchBrandBySlug(slug);
   
@@ -48,7 +48,7 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function BrandPage({ params }) {
+export default async function BrandPage({ params }: { params: any }) {
   const slug = params.slug;
   const brand = await fetchBrandBySlug(slug);
   

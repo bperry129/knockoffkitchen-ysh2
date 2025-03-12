@@ -5,7 +5,7 @@ import { Metadata } from 'next';
 import { fetchRecipes, searchRecipes, Recipe } from '@/lib/recipes';
 
 // Generate dynamic metadata based on search query
-export async function generateMetadata({ searchParams }) {
+export async function generateMetadata({ searchParams }: { searchParams: any }) {
   // Access searchParams safely
   const searchQuery = typeof searchParams.search === 'string' ? searchParams.search : undefined;
   
@@ -43,7 +43,7 @@ function sortRecipes(recipes: Recipe[], sortBy: string): Recipe[] {
   }
 }
 
-export default async function RecipesPage({ searchParams }) {
+export default async function RecipesPage({ searchParams }: { searchParams: any }) {
   // Get search query and sort parameters
   const searchQuery = typeof searchParams.search === 'string' ? searchParams.search : undefined;
   const sortBy = typeof searchParams.sort === 'string' ? searchParams.sort : 'alphabetical';

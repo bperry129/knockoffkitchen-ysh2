@@ -6,7 +6,7 @@ import { fetchRecipeBySlug, DEFAULT_RECIPE_IMAGE } from '@/lib/recipes';
 import { RecipeImage } from '@/components/ui/RecipeImage';
 import Script from 'next/script';
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params }: { params: any }) {
   const slug = params.slug;
   const recipe = await fetchRecipeBySlug(slug);
   
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function RecipePage({ params }) {
+export default async function RecipePage({ params }: { params: any }) {
   const slug = params.slug;
   const recipe = await fetchRecipeBySlug(slug);
   

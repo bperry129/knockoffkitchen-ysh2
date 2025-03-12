@@ -4,7 +4,7 @@ import { RecipeCard } from '@/components/recipes/RecipeCard';
 import { Metadata } from 'next';
 import { fetchCategoryBySlug, fetchRecipes } from '@/lib/recipes';
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params }: { params: any }) {
   const slug = params.slug;
   const category = await fetchCategoryBySlug(slug);
   
@@ -48,7 +48,7 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function CategoryPage({ params }) {
+export default async function CategoryPage({ params }: { params: any }) {
   const slug = params.slug;
   const category = await fetchCategoryBySlug(slug);
   
