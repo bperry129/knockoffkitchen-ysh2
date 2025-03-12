@@ -68,7 +68,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await writeFile(newFilePath, data);
     
     // Forward the request to the backend API
-    const apiUrl = process.env.BACKEND_API_URL || 'http://localhost:8000';
+    let apiUrl = process.env.BACKEND_API_URL || 'http://localhost:8000';
+    
+    // Ensure the API URL has a protocol
+    if (!apiUrl.startsWith('http://') && !apiUrl.startsWith('https://')) {
+      apiUrl = `https://${apiUrl}`;
+    }
+    
+    console.log(`Sending request to backend API at: ${apiUrl}/admin/upload-csv`);
     
     // Create form data for the backend API
     const formData = new FormData();
@@ -82,8 +89,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       body: formData,
     });
     
+    console.log(`Response status: ${response.status}`);
+    
     if (!response.ok) {
-      throw new Error(`Backend API error: ${response.statusText}`);
+      // Try to get more detailed error information
+      let errorMessage = `Backend API error: ${response.statusText}`;
+      try {
+        const errorData = await response.text();
+        console.error('Error response from backend:', errorData);
+        errorMessage = `Backend API error: ${errorData || response.statusText}`;
+      } catch (e) {
+        console.error('Could not parse error response:', e);
+      }
+      throw new Error(errorMessage);
     }
     
     const responseData = await response.json();
@@ -93,6 +111,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
   } catch (error) {
     console.error('Error handling CSV upload:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ 
+      error: error instanceof Error ? error.message : 'Internal server error',
+      details: error instanceof Error ? error.stack : undefined
+    });
   }
 }
