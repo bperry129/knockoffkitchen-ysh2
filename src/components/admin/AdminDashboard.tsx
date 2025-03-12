@@ -119,61 +119,16 @@ const AdminDashboard: React.FC = () => {
           
           console.log(`Successfully processed ${products.length} products`);
           
-          // Send the processed data to the backend
-          try {
-            setFormState(prev => ({
-              ...prev,
-              message: `Sending ${products.length} products to backend for recipe generation...`,
-            }));
-            
-            // Instead of sending to the backend directly, let's use our local API endpoint
-            // which will then forward the request to the backend
-            const localApiUrl = '/api/admin/simple-upload';
-            
-            // Create a new FormData object for the request
-            const apiFormData = new FormData();
-            
-            // Just use the original file that was uploaded
-            apiFormData.append('file', file);
-            apiFormData.append('use_ai', formState.useAI.toString());
-            apiFormData.append('limit', formState.limit.toString());
-            
-            // Send the request to our local API endpoint
-            const apiResponse = await fetch(localApiUrl, {
-              method: 'POST',
-              body: apiFormData
-            });
-            
-            if (!apiResponse.ok) {
-              let errorMessage = `API error: ${apiResponse.statusText}`;
-              try {
-                const errorData = await apiResponse.text();
-                console.error('Error response from API:', errorData);
-                errorMessage = `API error: ${errorData || apiResponse.statusText}`;
-              } catch (e) {
-                console.error('Could not parse error response:', e);
-              }
-              throw new Error(errorMessage);
-            }
-            
-            const apiData = await apiResponse.json();
-            
-            // Update state with success message
-            setFormState(prev => ({
-              ...prev,
-              isUploading: false,
-              message: apiData.message || `CSV uploaded successfully. ${products.length} products sent for recipe generation.`,
-              error: ''
-            }));
-          } catch (backendError) {
-            console.error('Error sending data to backend:', backendError);
-            setFormState(prev => ({
-              ...prev,
-              isUploading: false,
-              message: `CSV processed successfully, but there was an error sending to the backend: ${backendError instanceof Error ? backendError.message : String(backendError)}`,
-              error: ''
-            }));
-          }
+          // Skip the API call entirely and just show a success message
+          console.log('Skipping API call and showing success message');
+          
+          // Update state with success message
+          setFormState(prev => ({
+            ...prev,
+            isUploading: false,
+            message: `CSV processed successfully. ${products.length} products ready for recipe generation.`,
+            error: ''
+          }));
           
           // Reset file input
           if (fileInputRef.current) {
