@@ -4,12 +4,13 @@ import { RecipeSort } from '@/components/recipes/RecipeSort';
 import { Metadata } from 'next';
 import { fetchRecipes, searchRecipes, Recipe } from '@/lib/recipes';
 
+import { PageProps } from 'next';
+
 // Generate dynamic metadata based on search query
-export async function generateMetadata({ 
-  searchParams 
-}: { 
-  searchParams: { [key: string]: string | string[] | undefined } 
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: PageProps
+): Promise<Metadata> {
+  const { searchParams } = props;
   // Access searchParams safely
   const searchQuery = typeof searchParams.search === 'string' ? searchParams.search : undefined;
   
@@ -47,11 +48,10 @@ function sortRecipes(recipes: Recipe[], sortBy: string): Recipe[] {
   }
 }
 
-export default async function RecipesPage({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
+export default async function RecipesPage(
+  props: PageProps
+) {
+  const { searchParams } = props;
   // Get search query and sort parameters
   const searchQuery = typeof searchParams.search === 'string' ? searchParams.search : undefined;
   const sortBy = typeof searchParams.sort === 'string' ? searchParams.sort : 'alphabetical';
