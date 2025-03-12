@@ -6,12 +6,14 @@ import { fetchRecipeBySlug, DEFAULT_RECIPE_IMAGE } from '@/lib/recipes';
 import { RecipeImage } from '@/components/ui/RecipeImage';
 import Script from 'next/script';
 
-export async function generateMetadata({ 
-  params 
-}: { 
-  params: { slug: string } 
-}): Promise<Metadata> {
-  const recipe = await fetchRecipeBySlug(params.slug);
+import { PageProps } from 'next';
+
+export async function generateMetadata(
+  props: PageProps
+): Promise<Metadata> {
+  const { params } = props;
+  const slug = params.slug as string;
+  const recipe = await fetchRecipeBySlug(slug);
   
   if (!recipe) {
     return {
@@ -20,7 +22,7 @@ export async function generateMetadata({
     };
   }
   
-  const canonicalUrl = `https://knockoffkitchen.com/recipes/${params.slug}`;
+  const canonicalUrl = `https://knockoffkitchen.com/recipes/${slug}`;
   
   return {
     title: `Homemade ${recipe.title} Recipe - KnockoffKitchen.com`,
@@ -55,12 +57,12 @@ export async function generateMetadata({
   };
 }
 
-export default async function RecipePage({ 
-  params 
-}: { 
-  params: { slug: string } 
-}) {
-  const recipe = await fetchRecipeBySlug(params.slug);
+export default async function RecipePage(
+  props: PageProps
+) {
+  const { params } = props;
+  const slug = params.slug as string;
+  const recipe = await fetchRecipeBySlug(slug);
   
   // Generate JSON-LD structured data for recipe
   const jsonLd = recipe ? {

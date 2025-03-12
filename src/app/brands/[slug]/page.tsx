@@ -4,12 +4,14 @@ import { RecipeCard } from '@/components/recipes/RecipeCard';
 import { Metadata } from 'next';
 import { fetchBrandBySlug, fetchRecipesByBrand } from '@/lib/recipes';
 
-export async function generateMetadata({ 
-  params 
-}: { 
-  params: { slug: string } 
-}): Promise<Metadata> {
-  const brand = await fetchBrandBySlug(params.slug);
+import { PageProps } from 'next';
+
+export async function generateMetadata(
+  props: PageProps
+): Promise<Metadata> {
+  const { params } = props;
+  const slug = params.slug as string;
+  const brand = await fetchBrandBySlug(slug);
   
   if (!brand) {
     return {
@@ -18,7 +20,7 @@ export async function generateMetadata({
     };
   }
   
-  const canonicalUrl = `https://knockoffkitchen.com/brands/${params.slug}`;
+  const canonicalUrl = `https://knockoffkitchen.com/brands/${slug}`;
   
   return {
     title: `Homemade ${brand.name} Copycat Recipes - KnockoffKitchen.com`,
@@ -51,12 +53,12 @@ export async function generateMetadata({
   };
 }
 
-export default async function BrandPage({ 
-  params 
-}: { 
-  params: { slug: string } 
-}) {
-  const brand = await fetchBrandBySlug(params.slug);
+export default async function BrandPage(
+  props: PageProps
+) {
+  const { params } = props;
+  const slug = params.slug as string;
+  const brand = await fetchBrandBySlug(slug);
   
   if (!brand) {
     return (

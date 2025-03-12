@@ -4,12 +4,14 @@ import { RecipeCard } from '@/components/recipes/RecipeCard';
 import { Metadata } from 'next';
 import { fetchCategoryBySlug, fetchRecipes } from '@/lib/recipes';
 
-export async function generateMetadata({ 
-  params 
-}: { 
-  params: { slug: string } 
-}): Promise<Metadata> {
-  const category = await fetchCategoryBySlug(params.slug);
+import { PageProps } from 'next';
+
+export async function generateMetadata(
+  props: PageProps
+): Promise<Metadata> {
+  const { params } = props;
+  const slug = params.slug as string;
+  const category = await fetchCategoryBySlug(slug);
   
   if (!category) {
     return {
@@ -18,7 +20,7 @@ export async function generateMetadata({
     };
   }
   
-  const canonicalUrl = `https://knockoffkitchen.com/categories/${params.slug}`;
+  const canonicalUrl = `https://knockoffkitchen.com/categories/${slug}`;
   
   return {
     title: `Homemade ${category.name} Recipes - KnockoffKitchen.com`,
@@ -51,12 +53,12 @@ export async function generateMetadata({
   };
 }
 
-export default async function CategoryPage({ 
-  params 
-}: { 
-  params: { slug: string } 
-}) {
-  const category = await fetchCategoryBySlug(params.slug);
+export default async function CategoryPage(
+  props: PageProps
+) {
+  const { params } = props;
+  const slug = params.slug as string;
+  const category = await fetchCategoryBySlug(slug);
   
   if (!category) {
     return (
