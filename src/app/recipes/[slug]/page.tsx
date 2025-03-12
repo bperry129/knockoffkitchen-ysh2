@@ -6,13 +6,17 @@ import { fetchRecipeBySlug, DEFAULT_RECIPE_IMAGE } from '@/lib/recipes';
 import { RecipeImage } from '@/components/ui/RecipeImage';
 import Script from 'next/script';
 
-import { PageProps } from 'next';
+// Define the props interface for Next.js pages
+interface PageProps {
+  params: { [key: string]: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+}
 
 export async function generateMetadata(
   props: PageProps
 ): Promise<Metadata> {
   const { params } = props;
-  const slug = params.slug as string;
+  const slug = params.slug;
   const recipe = await fetchRecipeBySlug(slug);
   
   if (!recipe) {

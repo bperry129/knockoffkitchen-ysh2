@@ -4,7 +4,11 @@ import { RecipeSort } from '@/components/recipes/RecipeSort';
 import { Metadata } from 'next';
 import { fetchRecipes, searchRecipes, Recipe } from '@/lib/recipes';
 
-import { PageProps } from 'next';
+// Define the props interface for Next.js pages
+interface PageProps {
+  params: { [key: string]: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+}
 
 // Generate dynamic metadata based on search query
 export async function generateMetadata(

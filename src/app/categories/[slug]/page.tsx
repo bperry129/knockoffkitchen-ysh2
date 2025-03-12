@@ -4,13 +4,17 @@ import { RecipeCard } from '@/components/recipes/RecipeCard';
 import { Metadata } from 'next';
 import { fetchCategoryBySlug, fetchRecipes } from '@/lib/recipes';
 
-import { PageProps } from 'next';
+// Define the props interface for Next.js pages
+interface PageProps {
+  params: { [key: string]: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+}
 
 export async function generateMetadata(
   props: PageProps
 ): Promise<Metadata> {
   const { params } = props;
-  const slug = params.slug as string;
+  const slug = params.slug;
   const category = await fetchCategoryBySlug(slug);
   
   if (!category) {
