@@ -4,13 +4,11 @@ import { RecipeCard } from '@/components/recipes/RecipeCard';
 import { Metadata } from 'next';
 import { fetchBrandBySlug, fetchRecipesByBrand } from '@/lib/recipes';
 
-// Define the Props type to match Next.js 15 requirements
-interface Props {
-  params: { slug: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: { slug: string } 
+}): Promise<Metadata> {
   const brand = await fetchBrandBySlug(params.slug);
   
   if (!brand) {
@@ -53,7 +51,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function BrandPage({ params }: Props) {
+export default async function BrandPage({ 
+  params 
+}: { 
+  params: { slug: string } 
+}) {
   const brand = await fetchBrandBySlug(params.slug);
   
   if (!brand) {
