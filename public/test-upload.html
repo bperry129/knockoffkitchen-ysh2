@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test CSV Upload</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      display: none;
+    }
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+  </style>
+</head>
+<body>
+  <h1>Test CSV Upload</h1>
+  
+  <form id="uploadForm">
+    <div class="form-group">
+      <label for="csvFile">CSV File:</label>
+      <input type="file" id="csvFile" accept=".csv" required>
+    </div>
+    
+    <div class="form-group">
+      <label>
+        <input type="checkbox" id="useAI" checked> 
+        Use AI for recipe generation
+      </label>
+    </div>
+    
+    <div class="form-group">
+      <label for="limit">Limit (0 for no limit):</label>
+      <input type="number" id="limit" min="0" value="0">
+    </div>
+    
+    <button type="submit">Upload CSV</button>
+  </form>
+  
+  <div id="result" class="result"></div>
+  
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const fileInput = document.getElementById('csvFile');
+      const useAI = document.getElementById('useAI').checked;
+      const limit = document.getElementById('limit').value;
+      const resultDiv = document.getElementById('result');
+      
+      if (!fileInput.files.length) {
+        showError('Please select a CSV file');
+        return;
+      }
+      
+      const file = fileInput.files[0];
+      
+      if (!file.name.endsWith('.csv')) {
+        showError('Please upload a CSV file');
+        return;
+      }
+      
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('use_ai', useAI.toString());
+      formData.append('limit', limit);
+      
+      try {
+        // First try the simple-upload endpoint
+        showMessage('Trying simple-upload endpoint...');
+        
+        const simpleResponse = await fetch('/api/admin/simple-upload', {
+          method: 'POST',
+          body: formData
+        });
+        
+        if (simpleResponse.ok) {
+          const data = await simpleResponse.json();
+          showSuccess('Simple upload successful: ' + data.message);
+          return;
+        }
+        
+        // If that fails, try the test-upload endpoint
+        showMessage('Trying test-upload endpoint...');
+        
+        const testResponse = await fetch('/api/admin/test-upload', {
+          method: 'POST',
+          body: formData
+        });
+        
+        if (testResponse.ok) {
+          const data = await testResponse.json();
+          showSuccess('Test upload successful: ' + data.message);
+          return;
+        }
+        
+        // If that fails, try the original upload-csv endpoint
+        showMessage('Trying original upload-csv endpoint...');
+        
+        const originalResponse = await fetch('/api/admin/upload-csv', {
+          method: 'POST',
+          body: formData
+        });
+        
+        if (originalResponse.ok) {
+          const data = await originalResponse.json();
+          showSuccess('Original upload successful: ' + data.message);
+          return;
+        }
+        
+        // If all endpoints fail, try the PythonAnywhere backend directly
+        showMessage('Trying PythonAnywhere backend directly...');
+        
+        const backendUrl = 'https://bperry129.pythonanywhere.com/admin/upload-csv';
+        const backendResponse = await fetch(backendUrl, {
+          method: 'POST',
+          body: formData,
+          mode: 'cors'
+        });
+        
+        if (backendResponse.ok) {
+          const data = await backendResponse.json();
+          showSuccess('Backend upload successful: ' + data.message);
+          return;
+        }
+        
+        showError('All upload attempts failed');
+        
+      } catch (error) {
+        showError('Error: ' + error.message);
+        console.error('Upload error:', error);
+      }
+    });
+    
+    function showMessage(message) {
+      const resultDiv = document.getElementById('result');
+      resultDiv.textContent = message;
+      resultDiv.className = 'result';
+      resultDiv.style.display = 'block';
+    }
+    
+    function showSuccess(message) {
+      const resultDiv = document.getElementById('result');
+      resultDiv.textContent = message;
+      resultDiv.className = 'result success';
+      resultDiv.style.display = 'block';
+    }
+    
+    function showError(message) {
+      const resultDiv = document.getElementById('result');
+      resultDiv.textContent = message;
+      resultDiv.className = 'result error';
+      resultDiv.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
