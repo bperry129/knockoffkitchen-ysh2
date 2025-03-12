@@ -127,7 +127,7 @@ const AdminDashboard: React.FC = () => {
             }));
             
             // Send the data to the PythonAnywhere backend
-            const backendUrl = 'https://bperry129.pythonanywhere.com/api/process-products';
+            const backendUrl = 'https://bperry129.pythonanywhere.com/api/recipes/create';
             const backendResponse = await fetch(backendUrl, {
               method: 'POST',
               headers: {
