@@ -45,8 +45,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
     
     // Get form parameters
-    const useAI = fields.use_ai === 'true';
-    const limit = parseInt(fields.limit as string) || 0;
+    const useAIValue = Array.isArray(fields.use_ai) ? fields.use_ai[0] : fields.use_ai;
+    const useAI = useAIValue === 'true';
+    
+    const limitValue = Array.isArray(fields.limit) ? fields.limit[0] : fields.limit;
+    const limit = parseInt(limitValue || '0') || 0;
     
     // Create a temporary directory if it doesn't exist
     const tempDir = path.join(process.cwd(), 'temp');
