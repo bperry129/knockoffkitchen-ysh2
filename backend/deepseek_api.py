@@ -3,8 +3,13 @@ import os
 import json
 import time
 from typing import Dict, Any, Optional
+from dotenv import load_dotenv
 
-OPENROUTER_API_KEY = "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"
+# Load environment variables
+load_dotenv()
+
+# Get API key from environment variables
+OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
 OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
 def generate_recipe(product_name, brand_name, category=None):
