@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Environment Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+  </style>
+</head>
+<body>
+  <h1>Environment Test</h1>
+  
+  <p>This page tests if your Netlify deployment is working correctly.</p>
+  
+  <div id="result" class="result"></div>
+  
+  <script>
+    // Display the current URL
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = `
+      <h2>Current URL</h2>
+      <p>Origin: ${window.location.origin}</p>
+      <p>Pathname: ${window.location.pathname}</p>
+      <p>Full URL: ${window.location.href}</p>
+      
+      <h2>Environment Test</h2>
+      <p>This is a static HTML file served from the public directory.</p>
+      <p>If you can see this page, your Netlify deployment is working correctly for static files.</p>
+      
+      <h2>Next Steps</h2>
+      <p>Try accessing these URLs:</p>
+      <ul>
+        <li><a href="/api/admin/simple-upload" target="_blank">/api/admin/simple-upload</a> (should return a 405 Method Not Allowed error for GET requests)</li>
+        <li><a href="/api/admin/test-upload" target="_blank">/api/admin/test-upload</a> (should return a 405 Method Not Allowed error for GET requests)</li>
+        <li><a href="/api/env-check" target="_blank">/api/env-check</a> (should return your environment variables)</li>
+      </ul>
+    `;
+  </script>
+</body>
+</html>
