@@ -6,9 +6,11 @@ import { fetchRecipeBySlug, DEFAULT_RECIPE_IMAGE } from '@/lib/recipes';
 import { RecipeImage } from '@/components/ui/RecipeImage';
 import Script from 'next/script';
 
-type Props = {
-  params: { slug: string }
-};
+// Define the Props type to match Next.js 15 requirements
+interface Props {
+  params: { slug: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const recipe = await fetchRecipeBySlug(params.slug);

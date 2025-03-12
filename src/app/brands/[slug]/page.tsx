@@ -2,11 +2,13 @@ import React from 'react';
 import Link from 'next/link';
 import { RecipeCard } from '@/components/recipes/RecipeCard';
 import { Metadata } from 'next';
-import { fetchBrandBySlug, fetchRecipesByBrand, DEFAULT_RECIPE_IMAGE } from '@/lib/recipes';
+import { fetchBrandBySlug, fetchRecipesByBrand } from '@/lib/recipes';
 
-type Props = {
-  params: { slug: string }
-};
+// Define the Props type to match Next.js 15 requirements
+interface Props {
+  params: { slug: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const brand = await fetchBrandBySlug(params.slug);
