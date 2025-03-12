@@ -119,16 +119,72 @@ const AdminDashboard: React.FC = () => {
           
           console.log(`Successfully processed ${products.length} products`);
           
-          // Skip the API call entirely and just show a success message
-          console.log('Skipping API call and showing success message');
-          
-          // Update state with success message
-          setFormState(prev => ({
-            ...prev,
-            isUploading: false,
-            message: `CSV processed successfully. ${products.length} products ready for recipe generation.`,
-            error: ''
-          }));
+          // Send the data directly to the PythonAnywhere backend
+          try {
+            setFormState(prev => ({
+              ...prev,
+              message: `Sending ${products.length} products to backend for recipe generation...`,
+            }));
+            
+            // Create a CSV string from the products
+            const csvHeader = 'productname,brand,category,image_url';
+            const csvRows = products.map(p => {
+              return `${p.product},${p.brand},${p.category || ''},${p.image_url || ''}`;
+            });
+            const csvContent = [csvHeader, ...csvRows].join('\n');
+            
+            // Create a new File object from the CSV content
+            const csvFile = new File([csvContent], 'processed.csv', { type: 'text/csv' });
+            
+            // Create a FormData object
+            const backendFormData = new FormData();
+            backendFormData.append('file', csvFile);
+            backendFormData.append('use_ai', formState.useAI.toString());
+            backendFormData.append('limit', formState.limit.toString());
+            
+            // Send the request directly to the PythonAnywhere backend
+            const backendUrl = 'https://bperry129.pythonanywhere.com/admin/upload-csv';
+            const backendResponse = await fetch(backendUrl, {
+              method: 'POST',
+              body: backendFormData,
+              mode: 'cors',
+              headers: {
+                'Origin': window.location.origin,
+              }
+            });
+            
+            if (!backendResponse.ok) {
+              let errorMessage = `Backend error: ${backendResponse.statusText}`;
+              try {
+                const errorData = await backendResponse.text();
+                console.error('Error response from backend:', errorData);
+                errorMessage = `Backend error: ${errorData || backendResponse.statusText}`;
+              } catch (e) {
+                console.error('Could not parse error response:', e);
+              }
+              throw new Error(errorMessage);
+            }
+            
+            const backendData = await backendResponse.json();
+            
+            // Update state with success message
+            setFormState(prev => ({
+              ...prev,
+              isUploading: false,
+              message: backendData.message || `CSV uploaded successfully. ${products.length} products sent for recipe generation.`,
+              error: ''
+            }));
+          } catch (backendError) {
+            console.error('Error sending data to backend:', backendError);
+            
+            // If there's an error, show a message but don't treat it as a complete failure
+            setFormState(prev => ({
+              ...prev,
+              isUploading: false,
+              message: `CSV processed successfully, but there was an error sending to the backend. The data was not saved.`,
+              error: ''
+            }));
+          }
           
           // Reset file input
           if (fileInputRef.current) {
