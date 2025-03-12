@@ -127,18 +127,31 @@ const AdminDashboard: React.FC = () => {
             }));
             
             // Send the data to the PythonAnywhere backend
-            const backendUrl = 'https://bperry129.pythonanywhere.com/api/recipes/create';
+            const backendUrl = 'https://bperry129.pythonanywhere.com/admin/upload-csv';
+            
+            // Create a new FormData object for the backend request
+            const backendFormData = new FormData();
+            
+            // Convert the products array to a CSV string
+            const csvHeader = 'productname,brand,category,image_url';
+            const csvRows = products.map(p => {
+              return `${p.product},${p.brand},${p.category || ''},${p.image_url || ''}`;
+            });
+            const csvContent = [csvHeader, ...csvRows].join('\n');
+            
+            // Create a new File object from the CSV content
+            const csvFile = new File([csvContent], 'processed.csv', { type: 'text/csv' });
+            
+            // Add the file and other parameters to the FormData
+            backendFormData.append('file', csvFile);
+            backendFormData.append('use_ai', formState.useAI.toString());
+            backendFormData.append('limit', formState.limit.toString());
+            
+            // Send the request
             const backendResponse = await fetch(backendUrl, {
               method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-              },
-              body: JSON.stringify({
-                products,
-                use_ai: formState.useAI,
-                limit: formState.limit
-              })
+              body: backendFormData,
+              mode: 'cors'
             });
             
             if (!backendResponse.ok) {
