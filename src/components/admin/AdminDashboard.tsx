@@ -143,8 +143,8 @@ const AdminDashboard: React.FC = () => {
             backendFormData.append('limit', formState.limit.toString());
             
             // Use the local Next.js API endpoint instead of calling PythonAnywhere directly
-            // This avoids CORS issues and works around any URL routing problems
-            const localApiUrl = '/api/admin/simple-upload';
+            // This endpoint will forward the request to the PythonAnywhere backend
+            const localApiUrl = '/api/admin/upload-csv';
             const backendResponse = await fetch(localApiUrl, {
               method: 'POST',
               body: backendFormData,
