@@ -78,11 +78,13 @@ const AdminDashboard: React.FC = () => {
           
           // Parse the header row
           const headers = rows[0].split(',').map(header => header.trim().toLowerCase());
+          console.log('CSV headers:', headers);
           
           // Check if required columns exist
           const productIndex = headers.findIndex(h => 
             h === 'product' || h === 'product name' || h === 'productname');
           const brandIndex = headers.findIndex(h => h === 'brand');
+          const imageUrlIndex = headers.findIndex(h => h === 'image_url');
           
           if (productIndex === -1 || brandIndex === -1) {
             throw new Error('CSV file must contain "Product" and "Brand" columns');
@@ -99,11 +101,17 @@ const AdminDashboard: React.FC = () => {
               const values = rows[i].split(',').map(value => value.trim());
               
               if (values.length >= Math.max(productIndex, brandIndex) + 1) {
-                const product = {
+                const product: any = {
                   product: values[productIndex],
                   brand: values[brandIndex],
                   category: values[2] || 'Uncategorized'
                 };
+                
+                // Add image_url if it exists
+                if (imageUrlIndex !== -1 && imageUrlIndex < values.length) {
+                  product.image_url = values[imageUrlIndex];
+                }
+                
                 products.push(product);
               }
             }
@@ -255,12 +263,13 @@ const AdminDashboard: React.FC = () => {
         <h3 className="text-lg font-medium mb-4">CSV Format Instructions</h3>
         <p className="mb-2">Your CSV file should have the following columns:</p>
         <ul className="list-disc pl-5 mb-4 space-y-1">
-          <li><strong>Product</strong>: The name of the product (e.g., "Original Potato Chips")</li>
+          <li><strong>Product</strong> or <strong>productname</strong>: The name of the product (e.g., "Original Potato Chips")</li>
           <li><strong>Brand</strong>: The brand name (e.g., "Pringles")</li>
+          <li><strong>image_url</strong>: Optional URL to an image of the product</li>
           <li><strong>Category</strong>: Optional category (e.g., "Chips", "Snacks", "Cookies")</li>
         </ul>
         <p className="text-sm text-gray-500">
-          Example: "Original Potato Chips,Pringles,Chips"
+          Example: "Original Potato Chips,Pringles,https://example.com/image.jpg,Chips"
         </p>
       </div>
     </div>
