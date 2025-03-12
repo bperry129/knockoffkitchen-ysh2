@@ -1,111 +1,121 @@
 # KnockoffKitchen.com
 
-A web application that generates copycat recipes for popular branded food products using AI.
-
-## Overview
-
-KnockoffKitchen.com is a Next.js application that uses AI to generate detailed copycat recipes for popular branded food products. The application includes:
-
-- A frontend built with Next.js, React, and Tailwind CSS
-- A backend with Python and SQLAlchemy for database management
-- AI-powered recipe generation using DeepSeek API
-- PostgreSQL database for storing recipe data
+KnockoffKitchen.com is a website that provides homemade copycat recipes of popular branded products. Users can search for recipes by brand, category, or keyword, and browse through a collection of recipes that taste just like the original but are healthier and more affordable.
 
 ## Features
 
-- Browse recipes by category, brand, or search
-- View detailed recipe pages with ingredients, instructions, and nutritional information
-- Generate new copycat recipes using AI
-- Admin interface for managing recipes and brands
+- Browse recipes by brand or category
+- Search for recipes by keyword
+- View detailed recipe instructions, ingredients, and tips
+- Admin dashboard for uploading CSV files to generate new recipes
+- AI-powered recipe generation using DeepSeek API
+- Responsive design for mobile and desktop
 
-## Getting Started
+## Tech Stack
+
+### Frontend
+- Next.js 15
+- React 19
+- TypeScript
+- Tailwind CSS
+- Headless UI
+
+### Backend
+- FastAPI (Python)
+- MongoDB
+- DeepSeek API for AI recipe generation
+
+## Local Development Setup
 
 ### Prerequisites
 
-- Node.js (v18+)
-- Python (v3.9+)
-- PostgreSQL
+- Node.js 18+ and npm
+- Python 3.9+
+- MongoDB (local or Atlas)
 
-### Installation
+### Frontend Setup
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/copycat-recipes.git
-   cd copycat-recipes
+   git clone https://github.com/yourusername/knockoffkitchen.git
+   cd knockoffkitchen
    ```
 
-2. Install frontend dependencies:
+2. Install dependencies:
    ```bash
    npm install
    ```
 
-3. Install backend dependencies:
-   ```bash
-   cd backend
-   pip install -r requirements.txt
+3. Create a `.env.local` file in the root directory with the following variables:
+   ```
+   BACKEND_API_URL=http://localhost:8000
    ```
 
-4. Set up environment variables:
-   Create a `.env` file in the root directory with the following variables:
-   ```
-   DATABASE_URL=postgresql://username:password@localhost:5432/copycat_recipes_db
-   OPENROUTER_API_KEY=your_openrouter_api_key
-   ```
-
-5. Set up the database:
+4. Start the development server:
    ```bash
-   cd backend
-   python -m alembic upgrade head
-   ```
-
-6. Start the development server:
-   ```bash
-   # In the root directory
    npm run dev
    ```
 
-7. Start the backend server:
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Backend Setup
+
+1. Navigate to the backend directory:
    ```bash
-   # In the backend directory
-   python run.py
+   cd backend
    ```
 
-## Recipe Generation
+2. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
 
-The application uses the DeepSeek API through OpenRouter to generate copycat recipes. The generation process includes:
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-1. Parsing product data from a CSV file
-2. Generating detailed recipes with ingredients, instructions, and nutritional information
-3. Saving the recipes to JSON files and/or the database
+4. Create a `.env` file in the backend directory with the following variables:
+   ```
+   MONGODB_URI=mongodb://localhost:27017/knockoffkitchen
+   OPENROUTER_API_KEY=your_openrouter_api_key
+   ```
 
-To generate recipes:
-```bash
-cd backend
-python generate_recipes.py --csv path/to/products.csv --save
+5. Start the backend server:
+   ```bash
+   uvicorn mongodb_main:app --reload
+   ```
+
+6. The API will be available at [http://localhost:8000](http://localhost:8000).
+
+## CSV Format for Recipe Generation
+
+To generate recipes, you need to upload a CSV file with the following columns:
+
+- **Product**: The name of the product (e.g., "Original Potato Chips")
+- **Brand**: The brand name (e.g., "Pringles")
+- **Category**: Optional category (e.g., "Chips", "Snacks", "Cookies")
+
+Example:
+```
+Product,Brand,Category
+Original Potato Chips,Pringles,Chips
+Chocolate Chip Cookies,Famous Amos,Cookies
 ```
 
-## Project Structure
+## Deployment
 
-- `/src`: Frontend code (Next.js)
-  - `/app`: Next.js app router pages
-  - `/components`: React components
-  - `/lib`: Utility functions
-- `/backend`: Backend code (Python)
-  - `/migrations`: Database migrations
-  - `/recipes_output`: Generated recipe JSON files
-  - `models.py`: Database models
-  - `schemas.py`: Pydantic schemas
-  - `crud.py`: Database operations
-  - `deepseek_api.py`: AI recipe generation
-  - `generate_recipes.py`: Script to generate recipes
-
-## Future Enhancements
-
-- AI-generated images for recipes using Hugging Face
-- User accounts and saved recipes
-- Recipe ratings and comments
-- Mobile app version
+For production deployment instructions, see [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md).
 
 ## License
 
-[MIT](LICENSE)
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgements
+
+- [DeepSeek API](https://openrouter.ai/docs) for AI recipe generation
+- [Tailwind CSS](https://tailwindcss.com/) for styling
+- [Next.js](https://nextjs.org/) for the frontend framework
+- [FastAPI](https://fastapi.tiangolo.com/) for the backend API
+- [MongoDB](https://www.mongodb.com/) for the database

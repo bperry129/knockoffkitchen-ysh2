@@ -2,74 +2,90 @@ import React from 'react';
 import Link from 'next/link';
 import { RecipeCard } from '@/components/recipes/RecipeCard';
 import { Metadata } from 'next';
-
-// This would typically come from a database or API
-const getCategoryBySlug = (slug: string) => {
-  // Data from DeepSeek-generated recipes
-  const categories = {
-    "chips": {
-      name: "Chips",
-      description: "Delicious homemade chip recipes that taste just like your favorite store-bought brands but healthier and more affordable.",
-      image: "/images/chips.jpg"
-    }
-  };
-  
-  return categories[slug as keyof typeof categories] || {
-    name: "Category Not Found",
-    description: "This category does not exist.",
-    image: "/images/default.jpg"
-  };
-};
-
-// This would typically come from a database or API
-const getRecipesByCategory = (category: string) => {
-  // Data from DeepSeek-generated recipes
-  const allRecipes = [
-    {
-      id: 1,
-      title: "Homemade Extra Hot Chili & Lime: A Copycat Recipe Better Than Store-Bought",
-      category: "Chips",
-      image: "/images/chips.jpg",
-      prepTime: "15 min",
-      cookTime: "30 min",
-      difficulty: "Medium",
-      slug: "pringles-extra-hot-chili-lime"
-    }
-  ];
-  
-  return allRecipes.filter(recipe => 
-    recipe.category.toLowerCase() === category.toLowerCase()
-  );
-};
+import { fetchCategoryBySlug, fetchRecipes } from '@/lib/recipes';
 
 type Props = {
   params: { slug: string }
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const category = getCategoryBySlug(params.slug);
+  const category = await fetchCategoryBySlug(params.slug);
+  
+  if (!category) {
+    return {
+      title: 'Category Not Found - KnockoffKitchen.com',
+      description: 'This category does not exist.',
+    };
+  }
+  
+  const canonicalUrl = `https://knockoffkitchen.com/categories/${params.slug}`;
   
   return {
-    title: `${category.name} Recipes - CopyCat Recipes`,
-    description: category.description,
+    title: `Homemade ${category.name} Recipes - KnockoffKitchen.com`,
+    description: `Discover delicious homemade ${category.name.toLowerCase()} recipes. ${category.description}`,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    keywords: [`homemade ${category.name} recipes`, `${category.name.toLowerCase()} copycat recipes`, 'DIY recipes', 'homemade recipes'],
     openGraph: {
-      title: `${category.name} Recipes - CopyCat Recipes`,
-      description: category.description,
+      title: `Homemade ${category.name} Recipes - KnockoffKitchen.com`,
+      description: `Discover delicious homemade ${category.name.toLowerCase()} recipes. ${category.description}`,
+      url: canonicalUrl,
+      type: 'website',
       images: [
         {
-          url: category.image || '/images/default-category.jpg',
+          url: '/images/default-category.jpg',
           width: 1200,
           height: 630,
-          alt: category.name,
+          alt: `Homemade ${category.name} Recipes`,
         },
       ],
+      siteName: 'KnockoffKitchen.com',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `Homemade ${category.name} Recipes - KnockoffKitchen.com`,
+      description: `Discover delicious homemade ${category.name.toLowerCase()} recipes. ${category.description}`,
+      images: ['/images/default-category.jpg'],
     },
   };
 }
 
-export default function CategoryPage({ params }: Props) {
-  const category = getCategoryBySlug(params.slug);
-  const recipes = getRecipesByCategory(category.name);
+export default async function CategoryPage({ params }: Props) {
+  const category = await fetchCategoryBySlug(params.slug);
+  
+  if (!category) {
+    return (
+      <main className="py-8">
+        <div className="container mx-auto px-4">
+          <div className="mb-6">
+            <Link href="/categories" className="text-primary-600 hover:underline flex items-center">
+              ← Back to Categories
+            </Link>
+          </div>
+          
+          <div className="text-center py-12">
+            <h2 className="text-2xl font-semibold mb-4">Category Not Found</h2>
+            <p className="text-gray-600 mb-8">
+              We couldn't find the category you're looking for. Please try another category.
+            </p>
+            <Link 
+              href="/categories" 
+              className="inline-block bg-primary-600 text-white px-6 py-3 rounded-md font-medium hover:bg-primary-700 transition-colors"
+            >
+              Browse All Categories
+            </Link>
+          </div>
+        </div>
+      </main>
+    );
+  }
+  
+  // Fetch all recipes and filter by category
+  const allRecipes = await fetchRecipes();
+  const recipes = allRecipes.filter(recipe => 
+    recipe.category.toLowerCase() === category.name.toLowerCase()
+  );
   
   return (
     <>
@@ -89,8 +105,11 @@ export default function CategoryPage({ params }: Props) {
               </div>
             </div>
             <div className="p-6">
-              <h1 className="text-3xl font-bold mb-4">{category.name} Recipes</h1>
-              <p className="text-gray-700">{category.description}</p>
+              <h1 className="text-3xl font-bold mb-4">Homemade {category.name} Recipes</h1>
+              <p className="text-gray-700">
+                Discover our collection of homemade {category.name.toLowerCase()} recipes. 
+                {category.description}
+              </p>
             </div>
           </div>
           
@@ -103,6 +122,7 @@ export default function CategoryPage({ params }: Props) {
                   title={recipe.title}
                   category={recipe.category}
                   image={recipe.image}
+                  imageUrl={recipe.imageUrl}
                   prepTime={recipe.prepTime}
                   cookTime={recipe.cookTime}
                   difficulty={recipe.difficulty}

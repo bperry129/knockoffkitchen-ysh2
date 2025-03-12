@@ -13,25 +13,40 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   
   if (!brand) {
     return {
-      title: 'Brand Not Found - CopyCat Recipes',
+      title: 'Brand Not Found - KnockoffKitchen.com',
       description: 'The brand you are looking for could not be found.',
     };
   }
   
+  const canonicalUrl = `https://knockoffkitchen.com/brands/${params.slug}`;
+  
   return {
-    title: `${brand.name} Copycat Recipes - CopyCat Recipes`,
-    description: `Discover delicious copycat recipes from ${brand.name}. ${brand.count} recipes available.`,
+    title: `Homemade ${brand.name} Copycat Recipes - KnockoffKitchen.com`,
+    description: `Learn how to make homemade versions of your favorite ${brand.name} products. ${brand.count} copycat recipes available.`,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    keywords: [`homemade ${brand.name} recipes`, `${brand.name} copycat recipes`, `DIY ${brand.name} products`, 'homemade brand recipes'],
     openGraph: {
-      title: `${brand.name} Copycat Recipes - CopyCat Recipes`,
-      description: `Discover delicious copycat recipes from ${brand.name}. ${brand.count} recipes available.`,
+      title: `Homemade ${brand.name} Copycat Recipes - KnockoffKitchen.com`,
+      description: `Learn how to make homemade versions of your favorite ${brand.name} products. ${brand.count} copycat recipes available.`,
+      url: canonicalUrl,
+      type: 'website',
       images: [
         {
           url: '/images/knockoff.png',
           width: 1200,
           height: 630,
-          alt: brand.name,
+          alt: `Homemade ${brand.name} Recipes`,
         },
       ],
+      siteName: 'KnockoffKitchen.com',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `Homemade ${brand.name} Copycat Recipes - KnockoffKitchen.com`,
+      description: `Learn how to make homemade versions of your favorite ${brand.name} products. ${brand.count} copycat recipes available.`,
+      images: ['/images/knockoff.png'],
     },
   };
 }
@@ -77,16 +92,16 @@ export default async function BrandPage({ params }: Props) {
           </div>
           
           <div className="md:w-2/3 p-6">
-            <h1 className="text-3xl font-bold mb-4">{brand.name} Copycat Recipes</h1>
+            <h1 className="text-3xl font-bold mb-4">Homemade {brand.name} Copycat Recipes</h1>
             <p className="text-gray-700 mb-6">
-              Discover our collection of {brand.count} copycat recipes from {brand.name}. 
-              Make your favorite {brand.name} products at home with our easy-to-follow recipes.
+              Discover our collection of {brand.count} homemade copycat recipes from {brand.name}. 
+              Make your favorite {brand.name} products at home with our easy-to-follow recipes and save money while enjoying healthier alternatives.
             </p>
           </div>
         </div>
       </div>
       
-      <h2 className="text-2xl font-bold mb-6">Popular {brand.name} Recipes</h2>
+      <h2 className="text-2xl font-bold mb-6">Popular Homemade {brand.name} Recipes</h2>
       
       {recipes.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

@@ -1,0 +1,14 @@
+# robots.txt for KnockoffKitchen.com
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://knockoffkitchen.com/sitemap.xml
+
+# Disallow admin or private areas if they exist
+# Disallow: /admin/
+# Disallow: /private/
+
+# Crawl delay to prevent server overload
+Crawl-delay: 1

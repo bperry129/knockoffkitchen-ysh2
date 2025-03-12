@@ -1,54 +1,101 @@
 import React from 'react';
 import { RecipeCard } from '@/components/recipes/RecipeCard';
+import { RecipeSort } from '@/components/recipes/RecipeSort';
 import { Metadata } from 'next';
-import { fetchRecipes } from '@/lib/recipes';
+import { fetchRecipes, searchRecipes, Recipe } from '@/lib/recipes';
 
-export const metadata: Metadata = {
-  title: 'All Recipes - CopyCat Recipes',
-  description: 'Browse our collection of copycat recipes from your favorite brands. Easy to follow, tested recipes that taste just like the original.',
-};
+// Generate dynamic metadata based on search query
+export async function generateMetadata({ 
+  searchParams 
+}: { 
+  searchParams: { [key: string]: string | string[] | undefined } 
+}): Promise<Metadata> {
+  // Access searchParams safely
+  const searchQuery = typeof searchParams.search === 'string' ? searchParams.search : undefined;
+  
+  if (searchQuery) {
+    return {
+      title: `Search Results for "${searchQuery}" - KnockoffKitchen.com`,
+      description: `Find homemade copycat recipes matching "${searchQuery}". Make your favorite brand products at home with our easy-to-follow recipes.`,
+    };
+  }
+  
+  return {
+    title: 'All Recipes - KnockoffKitchen.com',
+    description: 'Browse our collection of homemade copycat recipes from your favorite brands. Easy to follow, tested recipes that taste just like the original.',
+  };
+}
 
-// Categories for filtering
-const categories = [
-  "All",
-  "Chips",
-  "Italian",
-  "Mexican",
-  "Fast Food",
-  "Dessert",
-  "Bakery",
-  "Soup",
-  "Asian",
-  "Breakfast"
-];
+// Function to sort recipes based on the selected option
+function sortRecipes(recipes: Recipe[], sortBy: string): Recipe[] {
+  const sortedRecipes = [...recipes]; // Create a copy to avoid mutating the original array
+  
+  switch (sortBy) {
+    case 'alphabetical':
+      return sortedRecipes.sort((a, b) => a.title.localeCompare(b.title));
+    case 'alphabetical-desc':
+      return sortedRecipes.sort((a, b) => b.title.localeCompare(a.title));
+    case 'newest':
+      // Assuming newer recipes have higher IDs
+      return sortedRecipes.sort((a, b) => b.id - a.id);
+    case 'popular':
+      // For now, we'll just use a random sort for demonstration
+      // In a real app, you would sort by popularity metrics
+      return sortedRecipes.sort(() => Math.random() - 0.5);
+    default:
+      return sortedRecipes;
+  }
+}
 
-export default async function RecipesPage() {
+export default async function RecipesPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  // Get search query and sort parameters
+  const searchQuery = typeof searchParams.search === 'string' ? searchParams.search : undefined;
+  const sortBy = typeof searchParams.sort === 'string' ? searchParams.sort : 'alphabetical';
+  
   // Fetch recipes from API
-  const recipes = await fetchRecipes();
+  let recipes = await fetchRecipes();
+  
+  // Filter by search query if provided
+  if (searchQuery) {
+    recipes = recipes.filter(recipe => 
+      recipe.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      recipe.brand_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      recipe.category.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
+  
+  // Sort recipes based on the selected option
+  recipes = sortRecipes(recipes, sortBy);
+  
+  // Set page title based on search query
+  const pageTitle = searchQuery 
+    ? `Search Results for "${searchQuery}"`
+    : "All Recipes";
   
   return (
     <>
       <main className="py-8">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl font-bold mb-8">All Recipes</h1>
+          <h1 className="text-3xl font-bold mb-8">{pageTitle}</h1>
           
-          {/* Filters */}
-          <div className="mb-8">
-            <div className="flex flex-wrap gap-2">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  className={`px-4 py-2 rounded-full text-sm font-medium ${
-                    category === 'Chips'
-                      ? 'bg-primary-600 text-white'
-                      : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
+          {/* Search results info */}
+          {searchQuery && (
+            <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+              <p className="text-gray-700">
+                Found {recipes.length} {recipes.length === 1 ? 'recipe' : 'recipes'} matching "{searchQuery}"
+              </p>
+              <a href="/recipes" className="text-primary-600 hover:underline mt-2 inline-block">
+                Clear search and view all recipes
+              </a>
             </div>
-          </div>
+          )}
+          
+          {/* Sorting options */}
+          <RecipeSort />
           
           {/* Recipes Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

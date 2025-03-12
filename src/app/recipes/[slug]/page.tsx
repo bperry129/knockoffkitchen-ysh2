@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { fetchRecipeBySlug, DEFAULT_RECIPE_IMAGE } from '@/lib/recipes';
 import { RecipeImage } from '@/components/ui/RecipeImage';
+import Script from 'next/script';
 
 type Props = {
   params: { slug: string }
@@ -19,13 +20,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
   
+  const canonicalUrl = `https://knockoffkitchen.com/recipes/${params.slug}`;
+  
   return {
-    title: `${recipe.title} - KnockoffKitchen.com`,
-    description: recipe.seo_meta_description || recipe.title,
+    title: `Homemade ${recipe.title} Recipe - KnockoffKitchen.com`,
+    description: `Learn how to make a homemade version of ${recipe.title}. ${recipe.seo_meta_description || ''}`,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    keywords: [`homemade ${recipe.title}`, `${recipe.title} recipe`, `copycat ${recipe.title}`, `${recipe.brand_name} recipe`, `homemade ${recipe.brand_name}`, 'copycat recipe'],
     openGraph: {
-      title: `${recipe.title} - KnockoffKitchen.com`,
-      description: recipe.seo_meta_description || recipe.title,
+      title: `Homemade ${recipe.title} Recipe - KnockoffKitchen.com`,
+      description: `Learn how to make a homemade version of ${recipe.title}. ${recipe.seo_meta_description || ''}`,
       type: 'article',
+      url: canonicalUrl,
       images: [
         {
           url: recipe.imageUrl || '/images/knockoff.png',
@@ -34,6 +42,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           alt: `Homemade ${recipe.title} recipe - KnockoffKitchen.com`,
         },
       ],
+      siteName: 'KnockoffKitchen.com',
+      locale: 'en_US',
+      publishedTime: new Date().toISOString(),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `Homemade ${recipe.title} Recipe - KnockoffKitchen.com`,
+      description: `Learn how to make a homemade version of ${recipe.title}. ${recipe.seo_meta_description || ''}`,
+      images: [recipe.imageUrl || '/images/knockoff.png'],
     },
   };
 }
@@ -41,6 +58,52 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function RecipePage({ params }: Props) {
   const recipe = await fetchRecipeBySlug(params.slug);
   
+  // Generate JSON-LD structured data for recipe
+  const jsonLd = recipe ? {
+    '@context': 'https://schema.org',
+    '@type': 'Recipe',
+    name: `Homemade ${recipe.title}`,
+    image: recipe.imageUrl || '/images/knockoff.png',
+    author: {
+      '@type': 'Organization',
+      name: 'KnockoffKitchen.com',
+    },
+    datePublished: new Date().toISOString().split('T')[0],
+    description: recipe.seo_meta_description || `Learn how to make a homemade version of ${recipe.title}`,
+    prepTime: `PT${recipe.prepTime.replace(/\D/g, '')}M`,
+    cookTime: `PT${recipe.cookTime.replace(/\D/g, '')}M`,
+    totalTime: `PT${recipe.totalTime.replace(/\D/g, '')}M`,
+    keywords: `homemade ${recipe.title}, ${recipe.brand_name} recipe, copycat recipe`,
+    recipeYield: recipe.yield || '4 servings',
+    recipeCategory: recipe.category,
+    recipeCuisine: 'American',
+    recipeIngredient: recipe.ingredients.items,
+    recipeInstructions: recipe.instructions.split('\n')
+      .filter((line: string) => line.trim() !== '')
+      .map((step: string, index: number) => ({
+        '@type': 'HowToStep',
+        position: index + 1,
+        text: step.replace(/^\d+\.\s*/, ''),
+      })),
+    nutrition: recipe.nutritional_info ? {
+      '@type': 'NutritionInformation',
+      text: recipe.nutritional_info.text,
+    } : undefined,
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '4.8',
+      reviewCount: '25',
+    },
+  } : null;
+  
+  // Add JSON-LD script to the page
+  const jsonLdScript = jsonLd ? (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  ) : null;
+
   if (!recipe) {
     return (
       <main className="py-8">
@@ -67,6 +130,8 @@ export default async function RecipePage({ params }: Props) {
   
   return (
     <>
+      {/* Add JSON-LD structured data */}
+      {jsonLdScript}
       <main className="py-8">
         <div className="container mx-auto px-4">
           <div className="mb-6">

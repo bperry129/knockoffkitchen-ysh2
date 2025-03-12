@@ -1,24 +1,16 @@
 import React from 'react';
 import Link from 'next/link';
 import { Metadata } from 'next';
+import { fetchCategories } from '@/lib/recipes';
 
 export const metadata: Metadata = {
   title: 'Recipe Categories - CopyCat Recipes',
   description: 'Browse our copycat recipes by category. Find Italian, Mexican, Fast Food, Desserts, and more categories of your favorite restaurant dishes.',
 };
 
-// Categories data from DeepSeek-generated recipes
-const categories = [
-  { 
-    name: "Chips", 
-    slug: "chips", 
-    image: "/images/chips.jpg",
-    description: "Delicious homemade chip recipes that taste just like your favorite store-bought brands but healthier and more affordable.",
-    count: 1
-  }
-];
-
-export default function CategoriesPage() {
+export default async function CategoriesPage() {
+  // Fetch categories from the API
+  const categories = await fetchCategories();
   return (
     <>
       <main className="py-8">

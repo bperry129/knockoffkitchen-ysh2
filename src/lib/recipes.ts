@@ -54,6 +54,12 @@ export function getBrands(): { name: string; slug: string; count: number }[] {
   return [];
 }
 
+export function getCategories(): { name: string; slug: string; count: number; description: string }[] {
+  // This is a client-side implementation that returns an empty array
+  // The actual data will be fetched from the API
+  return [];
+}
+
 export function getBrandBySlug(slug: string): { name: string; slug: string; count: number } | null {
   // This is a client-side implementation that returns null
   // The actual data will be fetched from the API
@@ -124,6 +130,21 @@ export async function fetchBrands(): Promise<{ name: string; slug: string; count
   }
 }
 
+// Client-side function to fetch categories
+export async function fetchCategories(): Promise<{ name: string; slug: string; count: number; description: string }[]> {
+  try {
+    const baseUrl = getBaseUrl();
+    const response = await fetch(`${baseUrl}/api/recipes?action=categories`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch categories');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    return [];
+  }
+}
+
 // Client-side function to fetch a brand by slug
 export async function fetchBrandBySlug(slug: string): Promise<{ name: string; slug: string; count: number } | null> {
   try {
@@ -131,6 +152,17 @@ export async function fetchBrandBySlug(slug: string): Promise<{ name: string; sl
     return brands.find(brand => brand.slug === slug) || null;
   } catch (error) {
     console.error(`Error fetching brand with slug ${slug}:`, error);
+    return null;
+  }
+}
+
+// Client-side function to fetch a category by slug
+export async function fetchCategoryBySlug(slug: string): Promise<{ name: string; slug: string; count: number; description: string } | null> {
+  try {
+    const categories = await fetchCategories();
+    return categories.find(category => category.slug === slug) || null;
+  } catch (error) {
+    console.error(`Error fetching category with slug ${slug}:`, error);
     return null;
   }
 }
@@ -163,5 +195,39 @@ export async function fetchRecipeCount(): Promise<number> {
   } catch (error) {
     console.error('Error fetching recipe count:', error);
     return 0;
+  }
+}
+
+// Client-side function to search recipes
+export async function searchRecipes(query: string): Promise<Recipe[]> {
+  try {
+    const baseUrl = getBaseUrl();
+    const response = await fetch(`${baseUrl}/api/recipes?action=search&query=${encodeURIComponent(query)}`);
+    if (!response.ok) {
+      throw new Error('Failed to search recipes');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Error searching recipes with query ${query}:`, error);
+    return [];
+  }
+}
+
+// Client-side function to get search suggestions
+export async function fetchSearchSuggestions(query: string): Promise<string[]> {
+  if (!query || query.trim().length < 2) {
+    return [];
+  }
+  
+  try {
+    const baseUrl = getBaseUrl();
+    const response = await fetch(`${baseUrl}/api/recipes?action=suggestions&query=${encodeURIComponent(query)}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch search suggestions');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching search suggestions for query ${query}:`, error);
+    return [];
   }
 }
