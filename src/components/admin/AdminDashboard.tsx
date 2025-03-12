@@ -119,16 +119,58 @@ const AdminDashboard: React.FC = () => {
           
           console.log(`Successfully processed ${products.length} products`);
           
-          // In a real implementation, you would send this data to your backend
-          // For now, just show success
-          
-          // Update state with success message
-          setFormState(prev => ({
-            ...prev,
-            isUploading: false,
-            message: `CSV uploaded successfully. Processed ${products.length} products.`,
-            error: ''
-          }));
+          // Send the processed data to the backend
+          try {
+            setFormState(prev => ({
+              ...prev,
+              message: `Sending ${products.length} products to backend for recipe generation...`,
+            }));
+            
+            // Send the data to the PythonAnywhere backend
+            const backendUrl = 'https://bperry129.pythonanywhere.com/api/process-products';
+            const backendResponse = await fetch(backendUrl, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+              },
+              body: JSON.stringify({
+                products,
+                use_ai: formState.useAI,
+                limit: formState.limit
+              })
+            });
+            
+            if (!backendResponse.ok) {
+              let errorMessage = `Backend error: ${backendResponse.statusText}`;
+              try {
+                const errorData = await backendResponse.text();
+                console.error('Error response from backend:', errorData);
+                errorMessage = `Backend error: ${errorData || backendResponse.statusText}`;
+              } catch (e) {
+                console.error('Could not parse error response:', e);
+              }
+              throw new Error(errorMessage);
+            }
+            
+            const backendData = await backendResponse.json();
+            
+            // Update state with success message
+            setFormState(prev => ({
+              ...prev,
+              isUploading: false,
+              message: backendData.message || `CSV uploaded successfully. ${products.length} products sent for recipe generation.`,
+              error: ''
+            }));
+          } catch (backendError) {
+            console.error('Error sending data to backend:', backendError);
+            setFormState(prev => ({
+              ...prev,
+              isUploading: false,
+              message: `CSV processed successfully, but there was an error sending to the backend: ${backendError instanceof Error ? backendError.message : String(backendError)}`,
+              error: ''
+            }));
+          }
           
           // Reset file input
           if (fileInputRef.current) {
