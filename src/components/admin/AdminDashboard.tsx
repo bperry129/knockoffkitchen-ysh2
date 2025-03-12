@@ -63,9 +63,12 @@ const AdminDashboard: React.FC = () => {
       // Get the base URL for API requests
       const baseUrl = window.location.origin;
       
-      // Upload the file to the test endpoint
-      const response = await fetch(`${baseUrl}/api/admin/test-upload`, {
+      // Upload the file to the simple endpoint
+      const response = await fetch(`${baseUrl}/api/admin/simple-upload`, {
         method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+        },
         body: formData
       });
       
