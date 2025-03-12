@@ -128,7 +128,7 @@ const AdminDashboard: React.FC = () => {
             
             // Instead of sending to the backend directly, let's use our local API endpoint
             // which will then forward the request to the backend
-            const localApiUrl = '/api/admin/upload-csv';
+            const localApiUrl = '/api/admin/simple-upload';
             
             // Create a new FormData object for the request
             const apiFormData = new FormData();
