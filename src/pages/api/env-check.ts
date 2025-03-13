@@ -1,14 +1,15 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
-// Simple API route that returns environment variables
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   // Return environment variables (excluding sensitive ones)
   const envVars = {
-    NODE_ENV: process.env.NODE_ENV,
-    BACKEND_API_URL: process.env.BACKEND_API_URL,
-    // Add any other environment variables you want to check
+    BACKEND_API_URL: process.env.BACKEND_API_URL || 'not set',
+    NODE_ENV: process.env.NODE_ENV || 'not set',
   };
   
   // Return the environment variables
-  res.status(200).json(envVars);
+  res.status(200).json({
+    envVars,
+    message: 'Environment variables retrieved successfully',
+  });
 }
