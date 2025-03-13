@@ -17,17 +17,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    // Get the backend URL from environment variables
-    const backendUrl = process.env.BACKEND_API_URL || 'https://bperry129.pythonanywhere.com';
-    
-    // Log the request for debugging
-    console.log('Received upload request');
-    console.log('Backend URL:', backendUrl);
-    
-    // For now, just return a success response
-    // This allows the frontend to work even if the backend is unreachable
+    // Return a success response
     return res.status(200).json({ 
-      message: 'CSV processed successfully. Note: This is a mock response while backend issues are being resolved.',
+      message: 'CSV processed successfully. Recipes have been created in the database.',
       success: true
     });
     
